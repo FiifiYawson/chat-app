@@ -1,0 +1,28 @@
+{
+    "name": "chat-app",
+    "version": "1.0.0",
+    "description": "this is an app for chatting with friends",
+    "main": "backend/server.js",
+    "scripts": {
+        "test": "test",
+        "dev": "nodemon backend/server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FiifiYawson/chat-app.git"
+    },
+    "keywords": [
+        "text",
+        "chat",
+        "communicate"
+    ],
+    "author": "Fiifi Yawson",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/FiifiYawson/chat-app/issues"
+    },
+    "homepage": "https://github.com/FiifiYawson/chat-app#readme",
+    "dependencies": {
+        "dotenv": "^16.0.1"
+    }
+}
