@@ -28,6 +28,7 @@ async function createUser(req, res) {
                 isSuccess: true,
                 isError: false,
                 token,
+                userId: user._id
             })
         }
     } catch (error) {
@@ -52,9 +53,9 @@ async function loginUser(req, res) {
 
             res.status(200).json({
                 message: "Log-in successful",
-                isSucess: true,
-                contacts: user.contacts,
+                isSuccess: true,
                 token,
+                userId: user._id,
             })
         } else {
             res.status(400).json({

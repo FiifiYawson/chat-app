@@ -4,7 +4,8 @@ const { getUserChats, sendMessage, createChat } = require("../controllers/chatsC
 
 const router = express.Router()
 
-router.route("/:id").get(validate, getUserChats).post(validate, createChat)
+router.route("/:id").post(validate, createChat)
+router.route("/").get(validate, getUserChats)
 router.route("/send/:id").post(validate, sendMessage)
 
 module.exports = router

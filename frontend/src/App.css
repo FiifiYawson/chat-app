@@ -1,39 +1,173 @@
-.App {
-  text-align: center;
+body {
+    overflow-y: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#contacts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #3E9BC2;
+    border-right: 1px black solid;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
+#main {
+    display: flex;
+    position: relative;
+    width: 100vw;
 }
 
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#contacts-container {
+    position: relative;
+    height: 100vh;
+    width: 30vw;
 }
 
-.App-link {
-  color: rgb(112, 76, 182);
+#create-contact {
+    width: 100%;
+    height: 200px;
+    background-color: #2C34F1;
+    border-bottom: 1px #000 solid;
+    text-align: center;
+    margin-bottom: 45px;
 }
 
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+#create-contact input {
+    top: 0;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 15px;
+    height: 50px;
+}
+
+#create-contact button {
+    width: 200px;
+    max-width: 100%;
+    height: 40px;
+    margin-top: 17px;
+    border-radius: 5px;
+    border: none;
+    background-color: #D9D9D9;
+}
+
+#create-contact button:hover {
+    cursor: pointer;
+    background-color: #c7c7c7;
+}
+
+#messageDisplay {
+    width: 70vw;
+    height: 100%;
+}
+
+#text-input {
+    position: fixed;
+    bottom: 0;
+    width: 70vw;
+    right: 0;
+    background-color: #D9D9D9;
+    min-height: 100px;
+    align-items: center;
+    border-top: 1px #000 solid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#text-input textarea {
+    resize: vertical;
+    min-height: 78px;
+    left: 70px;
+    border-radius: 39px;
+    padding: 10px;
+    width: 40vw;
+    min-width: 20vw;
+    overflow-y: hidden;
+    font-size: 24px;
+}
+
+#text-input button {
+    height: 78px;
+    width: 10vw;
+    right: 70px;
+    border-radius: 39px;
+    border: 0.5px #000 solid;
+    background-color: #2C34F1;
+    cursor: pointer;
+    font-size: 24px;
+    color: #fff;
+}
+
+#chat {
+    box-sizing: padding-box;
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
+    padding-bottom: 100px;
+    background-color: #f7f7f7;
+}
+
+#messageDisplay {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-container {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 0 70px
+}
+
+.text {
+    position: absolute;
+    height: 100%;
+    margin-bottom: 10px;
+    min-width: 100px;
+    width: fit-content;
+    padding: 10px;
+    font-size: 24px;
+}
+
+.receiver-text {
+    left: 2vw;
+    text-align: right;
+    background-color: #D9D9D9;
+    margin-left: 5px;
+    border-radius: 0 20px 20px 20px;
+}
+
+.sender-text {
+    justify-self: right;
+    right: 2vw;
+    text-align: left;
+    background-color: #2C34F1;
+    margin-right: 3px;
+    border-radius: 20px 0px 20px 20px;
+    color: #fff;
+}
+
+.contact {
+    height: 50px;
+    position: relative;
+    border-bottom: 1px black solid;
+    background-color: #D9D9D9;
+}
+
+.contact.active {
+    background-color: #f5f5f5;
+}
+
+.contact:hover {
+    background-color: #f5f5f5;
+}
+
+.contact-title {
+    position: absolute;
+    bottom: 0;
+    font-size: large;
+    font-weight: 500;
+    color: #000;
 }

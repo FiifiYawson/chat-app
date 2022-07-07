@@ -2,17 +2,22 @@ const jwt = require("jsonwebtoken")
 
 async function validate(req, res, next) {
     try {
-        const token = req.headers.authorization.split(" ")[1]
 
-        req.payload = jwt.verify(token, process.env.SECRET)
+        const auth = req.headers.authorization.split(" ")
+        if (auth[0] === "Bearer") {
+            const token = auth[1]
 
-        if (!req.payload) {
-            res.staus(401).json({
-                message: "Unauthorized access",
-                isError: false,
-                isSuccess: false,
-            })
+            req.payload = jwt.verify(token, process.env.SECRET)
+
+            if (!req.payload) {
+                res.staus(401).json({
+                    message: "Unauthorized access",
+                    isError: false,
+                    isSuccess: false,
+                })
+            }
         }
+
     } catch (err) {
         console.log(err)
 

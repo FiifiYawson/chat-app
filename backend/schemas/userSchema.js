@@ -12,7 +12,8 @@ const user = mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    isOnline: Boolean,
 })
 
 module.exports = mongoose.model("users", user)

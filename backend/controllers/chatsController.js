@@ -3,27 +3,25 @@ const users = require("../schemas/userSchema.js")
 
 async function getUserChats(req, res) {
     try {
-        const user = await users.findById(req.params.id)
         const userChats = []
 
-        user.chats.forEach(id => {
-            const chat = chats.findById(id).then(userChats.push(chat)).catch((err) => console.log(err.message))
+        const user = await users.findById(req.payload._id)
+
+        user.chats.forEach(async(id) => {
+            const chat = await chats.findById(id)
+
+            userChats.push(chat)
+
+            if (userChats.length === user.chats.length) {
+                res.status(200).json({
+                    message: "request successful",
+                    chats: userChats,
+                    isSuccess: true,
+                    isError: false,
+                })
+            }
         });
 
-        if (user) {
-            res.status(200).json({
-                message: "request successful",
-                chats: userChats,
-                isSuccess: true,
-                isError: false,
-            })
-        } else {
-            res.status(400).json({
-                message: "user not found",
-                isSuccess: false,
-                isError: false,
-            })
-        }
     } catch (error) {
         console.log(error)
 
@@ -61,25 +59,43 @@ async function sendMessage(req, res) {
 
 async function createChat(req, res) {
     try {
-        req.body.users = [req.payload._id, req.params.id]
+        const user1 = await users.findOne({ email_or_number: req.params.id })
+        const user2 = await users.findById(req.payload._id)
 
-        await chats.create(req.body)
+        if (user1) {
+            req.body.users = [{
+                name: user1.name,
+                email_or_number: user1.email_or_number,
+                isOnline: user1.isOnline
+            }, {
+                name: user2.name,
+                email_or_number: user2.email_or_number,
+                isOnline: user2.isOnline
+            }]
 
-        const chat = await chats.findOne(req.body)
+            await chats.create(req.body)
 
-        const user2 = await users.findById(req.body.users[1])
-        await user2.chats.push(chat._id)
-        await user2.save()
+            const chat = await chats.findOne(req.body)
 
-        const user1 = await users.findById(req.body.users[0])
-        await user1.chats.push(chat._id)
-        await user1.save()
+            await user2.chats.push(chat._id)
+            await user2.save()
 
-        res.status(200).json({
-            message: "chat created",
-            isSuccess: true,
-            isError: false,
-        })
+            await user1.chats.push(chat._id)
+            await user1.save()
+
+            res.status(200).json({
+                message: "chat created",
+                isSuccess: true,
+                isError: false,
+                chat,
+            })
+        } else {
+            res.status(400).json({
+                message: "user not found",
+                isSuccess: false,
+                isError: false,
+            })
+        }
     } catch (error) {
         console.log(error)
 
