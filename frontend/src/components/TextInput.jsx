@@ -1,7 +1,8 @@
 import {useState, useContext, useRef, useEffect} from 'react'
 import { sendMessage, addText } from "../features/chatSlice.js"
 import { useDispatch, useSelector } from "react-redux"
-import {socketContext} from "../pages/Main.jsx"
+import { socketContext } from "../pages/Main.jsx"
+import { GrSend} from "react-icons/gr"
 
 function TextInput({chatId}) {
     const dispatch = useDispatch()
@@ -76,7 +77,7 @@ function TextInput({chatId}) {
     return (
         <div id='text-input'>
             <textarea ref={textarea} wrap='soft' cols="5" value={input} autoFocus onChange={onChange} placeholder='write something...' />
-            <button onClick={sendMessageFn}>send</button>
+            <button onClick={sendMessageFn}><GrSend id='send'/></button>
         </div>
     )
 }

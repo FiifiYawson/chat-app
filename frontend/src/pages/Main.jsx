@@ -4,6 +4,7 @@ import Chat from "../components/Chat"
 import { useDispatch} from "react-redux"
 import { addChat, addText, getAllChats, isTyping, online } from "../features/chatSlice"
 import { io } from "socket.io-client"
+import "../main.css"
 
 const Main = () => {    
   const dispatch = useDispatch()
@@ -48,9 +49,7 @@ const Main = () => {
     <>
       <socketContext.Provider value={socket}>
         <div id="main">
-          <div id="contacts-container">
             <Contacts/>
-          </div>
           <div id="messageDisplay">
             <Chat />
           </div>

@@ -84,7 +84,9 @@ const chatSlice = createSlice({
             state.chats.find(chat => chat._id === action.payload.room).isTyping = action.payload.value
         },
         online: (state, action) => {
-            state.chats.find(chat => chat._id === action.payload.room).isOnline = action.payload.value
+            const valid = state.chats.find(chat => chat._id === action.payload.room)
+
+            if (valid) valid.isOnline = action.payload.value
         }
     },
     extraReducers: (builder) => {

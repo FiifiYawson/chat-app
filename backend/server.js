@@ -50,9 +50,6 @@ io.on("connect", (socket) => {
     try {
         socket.on("userConnect", (connectObj) => {
 
-            console.log("user connect")
-
-
             connectObj.rooms.forEach(room => {
                 socket.join([room, connectObj.user])
 

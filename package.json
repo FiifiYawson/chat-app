@@ -1,7 +1,8 @@
 {
     "name": "chat-app",
     "version": "1.0.0",
-    "description": "this is an app for chatting with friends",
+    "description": "this is an app for chatting",
+    "proxy": "http://localhost:5000/",
     "main": "backend/server.js",
     "scripts": {
         "test": "test",

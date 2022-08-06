@@ -66,16 +66,16 @@ async function createChat(req, res) {
             req.body.users = [{
                 name: user1.name,
                 email_or_number: user1.email_or_number,
-                isOnline: user1.isOnline
             }, {
                 name: user2.name,
                 email_or_number: user2.email_or_number,
-                isOnline: user2.isOnline
             }]
 
             await chats.create(req.body)
 
             const chat = await chats.findOne(req.body)
+
+            console.log(req.body)
 
             await user2.chats.push(chat._id)
             await user2.save()
