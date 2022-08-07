@@ -8,7 +8,7 @@ const initialState = {
 }
 
 export const login = createAsyncThunk("login", async(payload) => {
-    const res = await fetch(`http://localhost:5000/user/${payload.status}`, {
+    const res = await fetch(`/user/${payload.status}`, {
         method: "POST",
         headers: {
             "Content-type": "application/json"
