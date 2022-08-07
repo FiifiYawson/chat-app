@@ -34,7 +34,7 @@ switch (process.env.NODE_ENV) {
         })
         break
 
-    case "developement":
+    case "development":
         mongoose.connect(`${process.env.MONGO_LOCAL_URI}`).then(
             console.log("mongoose connected locally")
         ).catch((err) => {
