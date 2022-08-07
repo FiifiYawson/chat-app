@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
-const initialState = {}
+const initialState = {
+    error: {
+        value: false,
+        text: "",
+    }
+}
 
 export const login = createAsyncThunk("login", async(payload) => {
     const res = await fetch(`http://localhost:5000/user/${payload.status}`, {
@@ -32,7 +37,14 @@ export const login = createAsyncThunk("login", async(payload) => {
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        resetError: (state) => {
+            state.error = {
+                value: false,
+                text: ""
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
             if (action.payload.isSuccess) {
@@ -41,6 +53,11 @@ const authSlice = createSlice({
                 state.userId = action.payload.userId
                 state.email_or_number = action.payload.email_or_number
                 state.name = action.payload.name
+            } else {
+                state.error = {
+                    value: true,
+                    text: action.payload.message
+                }
             }
         })
     }

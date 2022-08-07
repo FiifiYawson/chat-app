@@ -21,7 +21,7 @@ async function validate(req, res, next) {
     } catch (err) {
         console.log(err)
 
-        res.status(500).res.json({
+        res.status(500).json({
             message: "Server Error",
             isSuccess: false,
             isError: true,

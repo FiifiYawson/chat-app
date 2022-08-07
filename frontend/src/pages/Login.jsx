@@ -1,14 +1,17 @@
-import { useDispatch} from "react-redux"
+import { useDispatch, useSelector} from "react-redux"
 import {useState} from "react"
 import { login } from "../features/authSlice"
 import { useNavigate } from "react-router-dom"
 import Semantic from "../components/Semantic.jsx"
+import {authActions} from "../features/authSlice"
 import "../login.css"
 
 const Hello = () => {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
+
+  const auth = useSelector(store => store.auth)
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -21,7 +24,21 @@ const Hello = () => {
     value: false,
     text: "",
   })
+
+  if (error.value) {
+    setTimeout(() => {
+      setError({
+        ...error,
+        value: false,
+        text: "",
+      })
+    } , 5000)
+  }
   
+  if (auth.error.value) {
+    setTimeout(() => dispatch(authActions.resetError()), 5000)
+  }
+
   const [status, setStatus] = useState("Login")
   
   const changeInput = (e) => {
@@ -34,23 +51,16 @@ const Hello = () => {
   const loginFn = (e) => {
     e.preventDefault()
 
-    if (inputs.name !== "" & inputs.email_or_number !== "" & inputs.password !== "" & inputs.confirmPassword !== "") {
-      dispatch(login({ inputs, status, navigate })) 
-      console.log("dispatched")
-      
-    } else if (inputs.password !== inputs.confirmPassword) {
+    if (inputs.password !== inputs.confirmPassword & status === "Register") {
       setError({
         ...error,
         value: true,
         text: "incorrect password confirmation"
       })
 
-      setTimeout(() => setError({
-        ...error,
-        value: false,
-        text: "",
-      }), 3000)
-
+    } else if ((inputs.name !== "" & inputs.email_or_number !== "" & inputs.password !== "" & status === "Register") | (status === "Login" & inputs.email_or_number !== "" & inputs.password !== "")) {
+      dispatch(login({ inputs, status, navigate, setError }))
+      
     } else {
       setError({
         ...error,
@@ -58,12 +68,11 @@ const Hello = () => {
         text: "fill all forms"
       })
 
-      setTimeout(() => setError({
-        ...error,
-        value: false,
-        text: "",
-      }), 3000)
-      console.log("error")
+      // setTimeout(() => setError({
+      //   ...error,
+      //   value: false,
+      //   text: "",
+      // }), 3000)
     }
     
     setInputs({
@@ -87,7 +96,8 @@ const Hello = () => {
           <input type="password" onChange={changeInput} name="password" value={inputs.password} placeholder="Password" />
           {status === "Register" && <input type="password" onChange={changeInput} name="confirmPassword" value={inputs.confirmPassword} placeholder="Confirm Password" />}
           <div id="toggle-submit-option" onClick={changeStatus}>{status === "Login" ? "click here to register" : "click here to log in"}</div>
-          {error.value && <Semantic text={error.text} code="warn"/>}
+          {error.value && <Semantic text={error.text} code="warn" />}
+          {auth.error.value && <Semantic text={auth.error.text} code="warn"/>}
           <button type="submit" onClick={loginFn}>{status }</button>
         </form>
         <div id="space"></div>

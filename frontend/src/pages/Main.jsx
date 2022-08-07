@@ -1,4 +1,5 @@
-import React,{ useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Contacts from "../components/Contacts"
 import Chat from "../components/Chat"
 import { useDispatch} from "react-redux"
@@ -8,42 +9,48 @@ import "../main.css"
 
 const Main = () => {    
   const dispatch = useDispatch()
+
+  const navigate = useNavigate()
   
   const [socket] = useState(() => io.connect())
   
   useEffect(() => {   
-    dispatch(getAllChats(socket))
-
-    socket.emit("userConnect", {
-      rooms: JSON.parse(localStorage.getItem("chats")),
-      user: localStorage.getItem("id"),
-      socketId: socket.id
-    })
-
-    socket.on("online", (payload) => {
-      dispatch(online(payload))
-    })
-    
-    socket.on("createChat", (chat) => {
-        dispatch(addChat(chat))
-    })
-
-    socket.on("message", (message) => {
-        dispatch(addText(message))
-    })
-
-    socket.on("isTyping", (typing) => {
-        dispatch(isTyping(typing))
-    })
+    if (!localStorage.getItem("auth token")) {
+      navigate("/login")
+    } else {
+      dispatch(getAllChats(socket))
+      
+      socket.emit("userConnect", {
+        rooms: JSON.parse(localStorage.getItem("chats")) || [],
+        user: localStorage.getItem("id"),
+        socketId: socket.id
+      })
+  
+      socket.on("online", (payload) => {
+        dispatch(online(payload))
+      })
+      
+      socket.on("createChat", (chat) => {
+          dispatch(addChat(chat))
+      })
+  
+      socket.on("message", (message) => {
+          dispatch(addText(message))
+      })
+  
+      socket.on("isTyping", (typing) => {
+          dispatch(isTyping(typing))
+      })
+    }
 
     return (
       () => {
         socket.emit("userDisconnect", {
-          rooms: JSON.parse(localStorage.getItem("chats")),
+          rooms: JSON.parse(localStorage.getItem("chats")) || [],
         })
       }
     )
-  }, [socket,dispatch]) 
+  }, [socket,dispatch, navigate]) 
 
   return (
     <>
