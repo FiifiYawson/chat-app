@@ -5,6 +5,7 @@
     "proxy": "http://localhost:5000/",
     "main": "backend/server.js",
     "scripts": {
+        "start": "backend/server.js",
         "test": "test",
         "dev": "nodemon backend/server.js"
     },
