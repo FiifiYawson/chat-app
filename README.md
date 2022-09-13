@@ -3,6 +3,8 @@ this is a chatting app project I created with react, socketio and node.
 
 Simply just create an account on the site and add user to chat with at anytime you'd like.
 
+see master branch of this repository to view source code.
+
 # Technologies
 > REACT.js/ redux
 > MONGO DB
