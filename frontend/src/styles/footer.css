@@ -1,0 +1,40 @@
+footer {
+    background-color: #fff;
+    border-top: 2px #000 solid;
+    height: 70px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 0 0;
+}
+
+footer div {
+    display: flex;
+    min-width: 500px;
+}
+
+.footer-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px;
+    flex: 1;
+    justify-content: center;
+}
+
+.footer-link:hover {
+    filter: brightness(1.5)
+}
+
+.footer-link span {
+    font-size: 13px;
+    display: block;
+    color: #aaa
+}
+
+.footer-link img {
+    height: 30px;
+}

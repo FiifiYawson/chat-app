@@ -1,0 +1,13 @@
+#main {
+    position: relative;
+    display: flex;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+@media(max-width: 600px) {
+    #main {
+        flex-direction: column;
+        height: 100vh;
+    }
+}

@@ -47,48 +47,45 @@ switch (process.env.NODE_ENV) {
 }
 
 io.on("connect", (socket) => {
-    try {
-        socket.on("userConnect", (connectObj) => {
-
-            connectObj.rooms.forEach(room => {
-                socket.join([room, connectObj.user])
-
-                if (io.sockets.adapter.rooms.get(room).size > 1) {
-                    io.to(room).emit("online", { room, value: true })
-                }
-            })
-        })
-
-        socket.on("userDisconnect", (payload) => {
-            console.log("disconnected")
-            payload.rooms.forEach(room => {
-                io.to(room).emit("online", { room, value: false })
-
-                socket.leave(room)
-            })
-        })
-
-        socket.on("message", (message) => {
-            socket.to(message.room).emit("message", message)
-        })
-
-        socket.on("creatChat", ({ receiver, chat, room }) => {
-            socket.join(room)
-
-            if (io.sockets.adapter.rooms.get(receiver)) {
-                io.sockets.adapter.rooms.get(receiver).forEach(socket => socket.join(room))
-
-                socket.to(room).emit("createChat", chat)
+    socket.on("userConnect", (connectObj) => {
+        socket.join(connectObj.rooms)
+        connectObj.rooms.forEach(room => {
+            if (io.sockets.adapter.rooms.get(room).size > 1) {
+                io.to(room).emit("online", { room, value: true })
             }
         })
 
-        socket.on("isTyping", (typing) => {
-            socket.to(typing.room).emit("isTyping", typing)
-        })
+        socket.join(connectObj.user)
+    })
 
-    } catch (error) {
-        console.log(error.message)
-    }
+    socket.on("userDisconnect", () => {
+        socket.disconnect()
+    })
+
+    socket.on("disconnecting", () => {
+        socket.rooms.forEach(room => {
+            io.to(room).emit("online", { room, value: false })
+            io.to(room).emit("isTyping", { room, value: false })
+        })
+    })
+
+    socket.on("message", (message) => {
+        socket.to(message.room).emit("message", message)
+    })
+
+    socket.on("creatChat", ({ receiver, chat, room }) => {
+        socket.join(room)
+
+        if (io.sockets.adapter.rooms.get(receiver)) {
+            io.sockets.adapter.rooms.get(receiver).forEach(socket => socket.join(room))
+
+            socket.to(room).emit("createChat", chat)
+        }
+    })
+
+    socket.on("isTyping", (typing) => {
+        socket.to(typing.room).emit("isTyping", typing)
+    })
 })
 
 server.listen(process.env.PORT, console.log(`server running on port ${process.env.PORT}`))

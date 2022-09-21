@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 const initialState = {
     chats: [],
     activeChat: null,
+    loading: false,
 }
 
 export const createChat = createAsyncThunk("api/create", async(payload) => {
@@ -55,8 +56,12 @@ export const getAllChats = createAsyncThunk("api/getAll", async(socket) => {
     if (data.isSuccess) {
         const userChats = data.chats.map(chat => chat._id)
 
-        localStorage.setItem("chats", JSON.stringify(userChats))
+        socket.emit("userConnect", {
+            rooms: userChats,
+            user: localStorage.getItem("id"),
+        })
     }
+
 
     return data
 })
@@ -91,9 +96,16 @@ const chatSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase((getAllChats.pending), (state) => {
+                state.loading = true
+            })
             .addCase(getAllChats.fulfilled, (state, action) => {
-                if (action.payload.isSuccess)
-                    state.chats = action.payload.chats
+                if (action.payload.isSuccess) state.chats = action.payload.chats
+
+                state.loading = false
+            })
+            .addCase(getAllChats.rejected, (state, action) => {
+                state.loading = false
             })
             .addCase(createChat.fulfilled, (state, action) => {
                 action.payload.isSuccess &&

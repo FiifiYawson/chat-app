@@ -1,18 +1,16 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from "./pages/Login.jsx"
 import Main from './pages/Main.jsx'
 
-function App(){
+function App() {
   return (
-    <div>
       <Router>
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path='/' element={<Main/>} />
+            <Route path=  "/"  element={<Main/>} />
         </Routes>
       </Router>
-    </div>
   );
 }
 

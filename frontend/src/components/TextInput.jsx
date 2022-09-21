@@ -1,25 +1,27 @@
 import {useState, useContext, useRef, useEffect} from 'react'
 import { sendMessage, addText } from "../features/chatSlice.js"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch} from "react-redux"
 import { socketContext } from "../pages/Main.jsx"
-import { GrSend} from "react-icons/gr"
+import { GrSend } from "react-icons/gr"
+import "../styles/input-area.css"
 
 function TextInput({chatId}) {
-    const dispatch = useDispatch()
-
-    const socket = useContext(socketContext)
-
-    const activeChat = useSelector((store) => store.chat.activeChat)
-    
     const chatElem = document.getElementById("chat")
 
-    useEffect(() => {
-        chatElem.scrollTop = chatElem.scrollHeight
-    },[chatElem,activeChat])
+    const dispatch = useDispatch()
+    
+    const socket = useContext(socketContext)
     
     const textarea = useRef()
 
+    useEffect(() => {
+        if (chatElem) {
+            chatElem.scrollTop = chatElem.scrollHeight
+        }
+    },[chatElem])
+
     const [input, setInput] = useState("")
+    
     const [isTyping, setIsTyping] = useState(false)
 
     const emitMessage = () => {
@@ -54,7 +56,10 @@ function TextInput({chatId}) {
     
             textarea.current.focus()
     
-            socket.emit("isTyping", {room: chatId, user: localStorage.getItem("id"), value: false})    
+            socket.emit("isTyping", {
+                room: chatId, user: localStorage.getItem("id"),
+                value: false
+            })    
         }
     }
     

@@ -1,0 +1,32 @@
+.contact {
+    height: 50px;
+    position: relative;
+    border-bottom: 1px black solid;
+    background-color: #D9D9D9;
+}
+
+.contact.active {
+    background-color: #f5f5f5;
+}
+
+.contact:hover {
+    background-color: #f5f5f5;
+}
+
+.contact-title {
+    position: absolute;
+    bottom: 0;
+    font-size: large;
+    font-weight: 500;
+    color: #000;
+}
+
+@media(max-width: 600px) {
+    .contact {
+        margin: 0;
+        border-right: 2px #000 solid;
+        border-bottom: none;
+        width: 100px;
+        height: 100%;
+    }
+}

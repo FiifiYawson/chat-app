@@ -1,0 +1,42 @@
+#options {
+    display: block;
+    position: absolute;
+    top: 0px;
+    width: 30vw;
+    height: 0px;
+    overflow: hidden;
+    box-sizing: border-box;
+    z-index: 2;
+    background: #2C34F1;
+    transition: all 1s;
+    text-align: center;
+}
+
+#options.active {
+    height: 200px;
+    padding-top: 50px;
+}
+
+.option {
+    width: 70%;
+    margin: auto;
+    border-bottom: 1px black solid;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.option:hover {
+    text-align: center;
+    color: white;
+}
+
+@media(max-width: 600px) {
+    #options {
+        right: 0px;
+        width: 50vw;
+        height: 0px;
+    }
+    #options.active {
+        height: 200px;
+    }
+}

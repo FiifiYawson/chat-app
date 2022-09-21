@@ -1,10 +1,11 @@
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import "../styles/menu-options.css"
 
 function MenuOptions() {
     const navigate = useNavigate()
 
     const logout = () => {
-        localStorage.clear()
+        localStorage.removeItem("auth token")
         navigate("/login")
     }
 
@@ -15,4 +16,4 @@ function MenuOptions() {
     )
 }
 
-export default MenuOptions  
+export default MenuOptions 

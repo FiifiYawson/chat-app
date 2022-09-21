@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import Contacts from "../components/Contacts"
+import { useNavigate} from "react-router-dom"
+import Aside from "../components/Aside"
 import Chat from "../components/Chat"
-import { useDispatch} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addChat, addText, getAllChats, isTyping, online } from "../features/chatSlice"
 import { io } from "socket.io-client"
-import "../main.css"
+import Login from "./Login"
+import "../styles/main.css"
 
 const Main = () => {    
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
   
-  const [socket] = useState(() => io.connect())
+  const auth = localStorage.getItem("auth token")
+
+  // Connect to socket if user is logged in. //
+  const [socket] = useState(() => {
+    if (auth) {
+      return io.connect()
+    }
+    return null
+    }
+  )
+
+  const chat = useSelector((store)=> store.chat )
   
+  // Socket setup for live chatting functionality 
   useEffect(() => {   
-    if (!localStorage.getItem("auth token")) {
-      navigate("/login")
-    } else {
+    if (auth) {
       dispatch(getAllChats(socket))
       
-      socket.emit("userConnect", {
-        rooms: JSON.parse(localStorage.getItem("chats")) || [],
-        user: localStorage.getItem("id"),
-        socketId: socket.id
-      })
-  
+      //Socket setup for live chatting functionality  
       socket.on("online", (payload) => {
         dispatch(online(payload))
       })
@@ -41,27 +47,33 @@ const Main = () => {
       socket.on("isTyping", (typing) => {
           dispatch(isTyping(typing))
       })
+    } else {
+      navigate("/login")
     }
 
     return (
+      //User disconnects
       () => {
-        socket.emit("userDisconnect", {
-          rooms: JSON.parse(localStorage.getItem("chats")) || [],
-        })
+        if (socket) {
+          socket.emit("userDisconnect")
+        }
       }
     )
-  }, [socket,dispatch, navigate]) 
+  }, [socket, dispatch, navigate, auth]) 
 
   return (
     <>
-      <socketContext.Provider value={socket}>
-        <div id="main">
-            <Contacts/>
-          <div id="messageDisplay">
-            <Chat />
-          </div>
-        </div>
-      </socketContext.Provider>
+      {
+        auth?
+          <socketContext.Provider value={socket}>
+            <div id="main">
+                <Aside/>
+                {chat.activeChat &&<Chat />}
+            </div>
+          </socketContext.Provider> 
+          :
+          <Login />
+      }
     </>
   )
 }

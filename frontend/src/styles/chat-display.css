@@ -1,0 +1,15 @@
+#chat-display {
+    flex-grow: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f7f7;
+}
+
+@media(max-width: 600px) {
+    #chat-display {
+        position: absolute;
+        width: 100vw;
+        padding-top: 60px;
+    }
+}

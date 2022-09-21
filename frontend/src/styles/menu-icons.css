@@ -1,0 +1,19 @@
+#menu {
+    background: #2C34F1;
+    display: flex;
+    align-items: center;
+}
+
+.menu-icon {
+    padding: 5px;
+    cursor: pointer;
+}
+
+#plus {
+    transition: 0.3s;
+    z-index: 3;
+}
+
+#plus.active {
+    transform: rotateZ(45deg);
+}

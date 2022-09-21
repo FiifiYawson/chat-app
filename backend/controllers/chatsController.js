@@ -7,6 +7,15 @@ async function getUserChats(req, res) {
 
         const user = await users.findById(req.payload._id)
 
+        if (user.chats.length === 0) {
+            res.status(200).json({
+                message: "request successful",
+                chats: [],
+                isSuccess: true,
+                isError: false,
+            })
+        }
+
         user.chats.forEach(async(id) => {
             const chat = await chats.findById(id)
 
@@ -15,7 +24,7 @@ async function getUserChats(req, res) {
             if (userChats.length === user.chats.length) {
                 res.status(200).json({
                     message: "request successful",
-                    chats: userChats,
+                    chats: userChats || [],
                     isSuccess: true,
                     isError: false,
                 })
@@ -74,8 +83,6 @@ async function createChat(req, res) {
             await chats.create(req.body)
 
             const chat = await chats.findOne(req.body)
-
-            console.log(req.body)
 
             await user2.chats.push(chat._id)
             await user2.save()

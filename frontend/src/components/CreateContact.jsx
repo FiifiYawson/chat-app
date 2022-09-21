@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react'
 import { createChat } from "../features/chatSlice.js"
 import { useDispatch } from "react-redux"
-import { socketContext} from "../pages/Main.jsx"
+import { socketContext } from "../pages/Main.jsx"
+import "../styles/create-contact.css"
 
 function CreateContact() {
     const [input, setInput] = useState("")
