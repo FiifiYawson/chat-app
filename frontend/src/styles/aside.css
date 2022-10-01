@@ -3,4 +3,14 @@ aside {
     flex-direction: column;
     height: 100vh;
     width: 30vw;
+    min-width: 15vw;
+}
+
+@media(max-width: 600px) {
+    aside {
+        position: absolute;
+        top: 0;
+        height: 50px;
+        width: 100vw;
+    }
 }

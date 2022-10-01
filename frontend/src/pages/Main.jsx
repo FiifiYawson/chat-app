@@ -21,51 +21,60 @@ const Main = () => {
       return io.connect()
     }
     return null
-    }
-  )
+  })
 
-  const chat = useSelector((store)=> store.chat )
+  const chat = useSelector((store) => store.chat )
   
-  // Socket setup for live chatting functionality 
-  useEffect(() => {   
+  //Socket setup for live chatting functionality and other setups. // 
+  useEffect(() => {
+
+    //Stop animations and transitions while page resizes. //
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      document.body.classList.add("resize-animation-stopper");
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        document.body.classList.remove("resize-animation-stopper");
+      }, 400);
+    });
+
     if (auth) {
+
       dispatch(getAllChats(socket))
       
-      //Socket setup for live chatting functionality  
+      //Socket setup for live chatting functionality. //  
       socket.on("online", (payload) => {
         dispatch(online(payload))
       })
       
       socket.on("createChat", (chat) => {
-          dispatch(addChat(chat))
+        dispatch(addChat(chat))
       })
-  
       socket.on("message", (message) => {
-          dispatch(addText(message))
+        dispatch(addText(message))
       })
   
       socket.on("isTyping", (typing) => {
-          dispatch(isTyping(typing))
+        dispatch(isTyping(typing))
       })
     } else {
       navigate("/login")
     }
 
     return (
-      //User disconnects
+      //User disconnects. //
       () => {
         if (socket) {
           socket.emit("userDisconnect")
         }
       }
-    )
-  }, [socket, dispatch, navigate, auth]) 
-
+      )
+    }, [socket, dispatch, navigate, auth])
   return (
     <>
       {
         auth?
-          <socketContext.Provider value={socket}>
+        <socketContext.Provider value={socket}>
             <div id="main">
                 <Aside/>
                 {chat.activeChat &&<Chat />}

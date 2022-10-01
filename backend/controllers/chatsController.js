@@ -1,6 +1,7 @@
 const chats = require("../schemas/chatSchema.js")
 const users = require("../schemas/userSchema.js")
 
+//Gather and send all chats of a user. //
 async function getUserChats(req, res) {
     try {
         const userChats = []
@@ -42,9 +43,10 @@ async function getUserChats(req, res) {
     }
 }
 
+//Send text to chat. //
 async function sendMessage(req, res) {
     try {
-        chat = await chats.findById(req.params.id)
+        const chat = await chats.findById(req.params.id)
 
         await chat.texts.push(req.body)
 
@@ -66,6 +68,7 @@ async function sendMessage(req, res) {
     }
 }
 
+//Creat a chat between user. //
 async function createChat(req, res) {
     try {
         const user1 = await users.findOne({ email_or_number: req.params.id })
@@ -75,9 +78,11 @@ async function createChat(req, res) {
             req.body.users = [{
                 name: user1.name,
                 email_or_number: user1.email_or_number,
+                _id: user1._id,
             }, {
                 name: user2.name,
                 email_or_number: user2.email_or_number,
+                _id: user2._id,
             }]
 
             await chats.create(req.body)

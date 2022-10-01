@@ -18,7 +18,9 @@ app.use(express.json())
 app.use(cors())
 app.use("/user", require("./routes/userRoutes.js"))
 app.use("/messages", require("./routes/messageRoutes.js"))
+app.use("/files", require("./routes/fileRoutes.js"))
 
+//Handle MongoDB connections and minor setup. //
 switch (process.env.NODE_ENV) {
     case "production":
         mongoose.connect(`${process.env.MONGO_ATLAS_URI}`).then(
@@ -46,6 +48,7 @@ switch (process.env.NODE_ENV) {
         throw new Error(`unknown NODE_ENV , ${process.env.NODE_ENV}`)
 }
 
+//Socket.io event listeners. //
 io.on("connect", (socket) => {
     socket.on("userConnect", (connectObj) => {
         socket.join(connectObj.rooms)

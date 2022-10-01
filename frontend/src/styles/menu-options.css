@@ -3,40 +3,43 @@
     position: absolute;
     top: 0px;
     width: 30vw;
-    height: 0px;
+    height: 185px;
+    padding-top: 50px;
     overflow: hidden;
     box-sizing: border-box;
     z-index: 2;
     background: #2C34F1;
-    transition: all 1s;
-    text-align: center;
+    transform: translateX(-30vw);
+    transition: transform 0.5s;
 }
 
 #options.active {
-    height: 200px;
-    padding-top: 50px;
+    transform: translateX(0px);
 }
 
 .option {
     width: 70%;
+    height: 20px;
     margin: auto;
-    border-bottom: 1px black solid;
     transition: 0.3s;
     cursor: pointer;
+    transition: border-left 0.5s, padding-left 0.5s;
+    width: 80%;
+    border-left: 3px #000 solid;
+    color: #fff;
 }
 
 .option:hover {
-    text-align: center;
-    color: white;
+    border-left: 15px #fff solid;
+    padding-left: 15px;
 }
 
 @media(max-width: 600px) {
     #options {
-        right: 0px;
-        width: 50vw;
-        height: 0px;
-    }
-    #options.active {
-        height: 200px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        transform: translateX(100vw);
     }
 }

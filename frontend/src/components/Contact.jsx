@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { setActiveChat } from "../features/chatSlice.js"
+import ProfilePicture from './ProfilePicture.jsx'
 import "../styles/contact.css"
 
 function Contact({chat, _id, user, activeChat }) {
@@ -23,8 +24,11 @@ function Contact({chat, _id, user, activeChat }) {
 
   return (
     <div className={contactClass ? contactClass : "contact"} onClick={() => dispatch(setActiveChat(_id))}>
-      <div className='contact-title'>{user.name}</div>
-      <div className='contact-status'>{status}</div>
+      <ProfilePicture contact={user} isUser={false} />
+      <div id="contact-info">
+        <div className='contact-title'>{user.name}</div>
+        <div className='contact-status'>{status}</div>
+      </div>
     </div>
   )
 }

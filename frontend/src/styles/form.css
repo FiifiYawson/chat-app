@@ -24,11 +24,13 @@ form input {
     height: 47px;
     border-radius: 6px;
     margin-bottom: 28px;
+    border: none;
     border: 2px #000 solid
 }
 
 form input:focus {
     border: 3px #2c34f1 solid;
+    outline: 0px;
 }
 
 #info {

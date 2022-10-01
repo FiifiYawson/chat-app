@@ -1,14 +1,12 @@
 #text-input {
-    background-color: #D9D9D9;
     min-height: 100px;
     align-items: center;
-    border-top: 1px #000 solid;
     display: flex;
     justify-content: space-evenly;
 }
 
 #text-input textarea {
-    resize: vertical;
+    /* resize: vertical; */
     min-height: 78px;
     left: 70px;
     border-radius: 39px;
@@ -21,7 +19,7 @@
 
 #text-input button {
     height: 78px;
-    width: 10vw;
+    width: 78px;
     right: 70px;
     border-radius: 39px;
     border: 0.5px #000 solid;
@@ -41,8 +39,5 @@
     }
     #text-input textarea {
         width: 70vw;
-    }
-    #text-input button {
-        width: 100px;
     }
 }

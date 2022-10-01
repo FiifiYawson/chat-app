@@ -1,5 +1,6 @@
 #menu {
     background: #2C34F1;
+    background-color: #3E9BC2;
     display: flex;
     align-items: center;
 }
@@ -10,10 +11,10 @@
 }
 
 #plus {
-    transition: 0.3s;
+    transition: 1s;
     z-index: 3;
 }
 
 #plus.active {
-    transform: rotateZ(45deg);
+    transform: rotateZ(135deg);
 }

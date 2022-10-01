@@ -3,18 +3,19 @@
     position: absolute;
     top: 0px;
     width: 30vw;
-    height: 0px;
+    height: 185px;
     overflow: hidden;
     box-sizing: border-box;
+    padding-top: 30px;
     z-index: 2;
     background: #2C34F1;
-    transition: all 1s;
+    transform: translateX(-30vw);
+    transition: 0.5s;
     text-align: center;
 }
 
 #create-contact.active {
-    height: 200px;
-    padding-top: 50px;
+    transform: translateX(0px);
 }
 
 #create-contact input {
@@ -44,11 +45,13 @@
 
 @media(max-width: 600px) {
     #create-contact {
-        right: 0px;
-        width: 50vw;
-        height: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        transform: translateY(-200px);
     }
     #create-contact.active {
-        height: 200px;
+        transform: translateY(0)
     }
 }
