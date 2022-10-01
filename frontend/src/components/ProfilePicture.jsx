@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import "../styles/profilepic.css"
-import userpic from "../images/user-pic.svg"
 
 function ProfilePicture({ contact, isUser }) {
     const [isOK, setIsOK] = useState()
