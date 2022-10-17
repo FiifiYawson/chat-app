@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.beeec556.css",
+    "main.css": "/static/css/main.bd7d3b05.css",
     "main.js": "/static/js/main.80de2028.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/background.png": "/static/media/background.2a7bae462df6763a4ca5.png",
@@ -11,12 +11,12 @@
     "static/media/Gmail logo.svg": "/static/media/Gmail logo.4969bd42e10d6d56efcbb81c7e91dada.svg",
     "index.html": "/index.html",
     "static/media/upload.svg": "/static/media/upload.d61b51fa8d4b89afdf91aac924cd68d6.svg",
-    "main.beeec556.css.map": "/static/css/main.beeec556.css.map",
+    "main.bd7d3b05.css.map": "/static/css/main.bd7d3b05.css.map",
     "main.80de2028.js.map": "/static/js/main.80de2028.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.beeec556.css",
+    "static/css/main.bd7d3b05.css",
     "static/js/main.80de2028.js"
   ]
 }
