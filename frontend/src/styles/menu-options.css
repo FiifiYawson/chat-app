@@ -15,7 +15,6 @@
 
 #options.active {
     transform: translateX(0px);
-    visibility: visible;
 }
 
 .option {
@@ -41,7 +40,6 @@
         top: 0;
         left: 0;
         width: 100vw;
-        transform: translateY(-100%);
-        visibility: hidden;
+        transform: translateX(100%);
     }
 }
