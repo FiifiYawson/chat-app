@@ -8,9 +8,7 @@ aside {
 
 @media(max-width: 600px) {
     aside {
-        position: absolute;
-        top: 0;
-        height: 50px;
         width: 100vw;
+        height: fit-content;
     }
 }

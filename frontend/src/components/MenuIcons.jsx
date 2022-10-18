@@ -12,7 +12,8 @@ function MenuIcons() {
         options.classList.remove("active")
         
         setMenuOptions(false)
-
+        console.log(menuOptions)
+        
         if (!menuOptions) {
             createContact.classList.toggle("active") 
             plus.classList.toggle("active")

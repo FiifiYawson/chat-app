@@ -10,14 +10,16 @@ function ProfileOptions() {
         form = new FormData()
         input.type = "file"
         input.onchange = () => {
-            form.append("profilepic", input.files[0])
-            fetch("/files/profilepic", {
-                method: "POST",
-                body: form,
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem("auth token")}`
-                }
-            })
+            if (input.files[0].type.split("/")[0] === "image") {
+                form.append("profilepic", input.files[0])
+                fetch("/files/profilepic", {
+                    method: "POST",
+                    body: form,
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem("auth token")}`
+                    }
+                })
+            }
         }
         input.click()
     }
