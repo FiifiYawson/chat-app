@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import "../styles/profilepic.css"
 
-function ProfilePicture({ contact, isUser }) {
+function ProfilePicture({ id }) {
     const [isOK, setIsOK] = useState()
 
     useEffect(() => {
-        fetch(`/files/profilepic/${contact._id}`)
+        fetch(`/files/profilepic/${id}`)
         .then(res => {
             if (res.ok) {
                 return res.blob()
@@ -17,7 +17,7 @@ function ProfilePicture({ contact, isUser }) {
                 setIsOK(false)
             }
         })
-    }, [contact._id])
+    }, [id])
     
     const style = isOK ?
         {
@@ -26,9 +26,7 @@ function ProfilePicture({ contact, isUser }) {
         :{}
     
     return (
-        <div style={style} className={isUser ? 'user-profilepic profilepic' : 'contact-profilepic profilepic'}>
-
-        </div>            
+        <div style={style} className='contact-profilepic profilepic'></div>            
     )
 }
 

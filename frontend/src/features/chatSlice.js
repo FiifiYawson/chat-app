@@ -92,6 +92,10 @@ const chatSlice = createSlice({
             const valid = state.chats.find(chat => chat._id === action.payload.room)
 
             if (valid) valid.isOnline = action.payload.value
+        },
+        reset: (state, action) => {
+            state.chats = initialState.chats
+            state.activeChat = initialState.activeChat
         }
     },
     extraReducers: (builder) => {
@@ -115,4 +119,4 @@ const chatSlice = createSlice({
 })
 
 export default chatSlice.reducer
-export const { setActiveChat, addText, addChat, isTyping, online } = chatSlice.actions
+export const { setActiveChat, addText, addChat, isTyping, online, reset } = chatSlice.actions

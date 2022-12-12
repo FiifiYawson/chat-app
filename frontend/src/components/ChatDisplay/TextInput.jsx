@@ -1,9 +1,10 @@
 import {useState, useContext, useRef, useEffect} from 'react'
-import { sendMessage, addText } from "../features/chatSlice.js"
+import { sendMessage, addText } from "../../features/chatSlice.js"
 import { useDispatch} from "react-redux"
-import { socketContext } from "../pages/Main.jsx"
+import { socketContext } from "../../pages/Main.jsx"
 import { GrSend } from "react-icons/gr"
-import "../styles/input-area.css"
+import "../../styles/input-area.css"
+
 
 function TextInput({chatId}) {
     const chatElem = document.getElementById("chat")

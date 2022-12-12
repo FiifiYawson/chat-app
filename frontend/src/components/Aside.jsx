@@ -1,5 +1,5 @@
-import Contacts from "./Contacts"
-import Menu from "./Menu"
+import Contacts from "./Contacts/Contacts"
+import Menu from "./Menu/Menu"
 import "../styles/aside.css"
 import Profile from "./Profile"
 

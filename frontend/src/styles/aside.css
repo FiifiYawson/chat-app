@@ -2,8 +2,9 @@ aside {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 30vw;
-    min-width: 15vw;
+    /* width: 30vw;
+    min-width: 15vw; */
+    width: clamp(250px, 30vw, 300px)
 }
 
 @media(max-width: 600px) {

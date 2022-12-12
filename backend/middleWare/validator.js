@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 async function validate(req, res, next) {
     try {
         const auth = req.headers.authorization.split(" ")
+
         if (auth[0] === "Bearer") {
             const token = auth[1]
 
@@ -19,7 +20,7 @@ async function validate(req, res, next) {
             next()
         }
     } catch (err) {
-        console.log(err)
+        console.log(err.message)
 
         res.status(500).json({
             message: "Server Error",

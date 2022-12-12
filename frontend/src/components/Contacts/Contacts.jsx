@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux"
 import Contact from "./Contact.jsx"
-import Loader from "./Loader"
-import "../styles/contacts.css"
+import Loader from "../Loader"
+import "../../styles/contacts.css"
 
 function Contacts() {
     const chat = useSelector((store) => store.chat)

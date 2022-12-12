@@ -89,6 +89,12 @@ io.on("connect", (socket) => {
     socket.on("isTyping", (typing) => {
         socket.to(typing.room).emit("isTyping", typing)
     })
+
+    socket.on("profilepic", () => {
+        io.sockets.adapter.rooms.get(socket.id).forEach(room => {
+            io.to(room).emit("profilepic")
+        })
+    })
 })
 
 server.listen(process.env.PORT, console.log(`server running on port ${process.env.PORT}`))

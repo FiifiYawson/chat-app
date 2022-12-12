@@ -101,8 +101,40 @@ async function deleteUser(req, res) {
     }
 }
 
+async function searchUser(req, res) {
+    try {
+        const searchUsers = await users.find({
+            $and: [{
+                $or: [{
+                    name: {
+                        $regex: req.params.query,
+                        $options: "i"
+                    },
+                }, {
+                    email_or_number: {
+                        $regex: req.params.query,
+                        $options: "i"
+                    },
+
+                }]
+            }, {
+                _id: { $ne: req.payload._id }
+            }]
+        })
+
+        res.json({
+            searchUsers,
+        })
+
+    } catch (error) {
+        console.log(error.message)
+    }
+
+}
+
 module.exports = {
     createUser,
     loginUser,
     deleteUser,
+    searchUser
 }

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate} from "react-router-dom"
 import Aside from "../components/Aside"
-import Chat from "../components/Chat"
+import Chat from "../components/ChatDisplay/Chat"
 import { useDispatch, useSelector } from "react-redux"
 import { addChat, addText, getAllChats, isTyping, online } from "../features/chatSlice"
 import { io } from "socket.io-client"
 import Login from "./Login"
 import "../styles/main.css"
+import Home from "../components/Home/Home"
 
 const Main = () => {    
   const dispatch = useDispatch()
@@ -77,7 +78,7 @@ const Main = () => {
         <socketContext.Provider value={socket}>
             <div id="main">
                 <Aside/>
-                {chat.activeChat &&<Chat />}
+              {chat.activeChat ? <Chat/> : <Home/>}
             </div>
           </socketContext.Provider> 
           :
