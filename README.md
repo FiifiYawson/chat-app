@@ -14,6 +14,3 @@ see master branch of this repository to view source code.
 # Future updates
 - The app is still fairly under developement so further feathurs such as deleting chats and automatic friend suggestions and many more will be added soon enough.
 At the moment enjoy my project and utilize at will.
-
-# site url
-visit https://hello-chat-0.herokuapp.com
