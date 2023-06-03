@@ -1,14 +1,60 @@
 #chat-display {
     flex-grow: 1;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #f7f7f7;
+    background-color: #f1f1f1;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#chat-head{
+    display: flex;
+    justify-content: flex-start;
+    white-space: pre;
+    align-items: center;
+    color: #777;
+    max-width: 50%;
+    text-overflow: ellipsis;
+    padding: 0 10%;
+    cursor:default;
+    overflow: hidden;
+}
+
+#chat-head h1{
+    font-size: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#chat-head small{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#chat-head:hover{
+    color: #000000
+}
+
+#chat-display #menu,
+#chat-display #options{
+    display: none;
 }
 
 @media(max-width: 600px) {
     #chat-display {
+        display: none;
+    }
+
+    #chat-display.active {
         width: 100vw;
-        height: calc( 100% - 200px)
+        display: flex;
+    }
+
+    #chat-display #menu{
+        display: flex;
+    }
+
+    #chat-display #options{
+        display: block;
     }
 }

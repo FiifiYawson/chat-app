@@ -1,5 +1,5 @@
 .contact-container {
-    min-width: 100px;
+    width: 130px;
     min-height: 120px;
     display: flex;
     flex-direction: column;
@@ -8,6 +8,9 @@
     border-radius: 10px;
     justify-content: center;
     background-color: #eee;
+    padding: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .contact-container:hover {
@@ -28,4 +31,32 @@
 .chat-button {
     background-color: #3E9BC2;
     color: #fff;
+}
+
+.add-button{
+    color: var(--light-blue);
+    background-color: #FFFFFF
+}
+
+.contact-details{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+#search-contact .contact-name{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#search-contact .contact-username{
+    font-size: 10px;
+    color: #000;
+    margin-bottom: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

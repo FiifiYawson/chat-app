@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.a1097557.css",
-    "main.js": "/static/js/main.bce59ff0.js",
+    "main.css": "/static/css/main.9f457b6c.css",
+    "main.js": "/static/js/main.1e0f2b8d.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/Poppins-Regular.ttf": "/static/media/Poppins-Regular.4211496d0e075ffe7c2f.ttf",
     "static/media/background.png": "/static/media/background.2a7bae462df6763a4ca5.png",
-    "static/media/logo.svg": "/static/media/logo.ed6ee5af91dc6a33334258d4c4f43026.svg",
-    "static/media/user-pic.svg": "/static/media/user-pic.fa10d3120efa4b4680a9.svg",
-    "static/media/github-logo.svg": "/static/media/github-logo.44c462a461d0b7a9ec512d431405778a.svg",
-    "static/media/phone-image.svg": "/static/media/phone-image.129b6bda683df9ea434e18c93559439c.svg",
-    "static/media/Gmail logo.svg": "/static/media/Gmail logo.4969bd42e10d6d56efcbb81c7e91dada.svg",
+    "static/media/logo.svg": "/static/media/logo.66078571997bcf472740cfc999c31aa8.svg",
+    "static/media/user-pic.svg": "/static/media/user-pic.7bc27d85de0d9aa99f579134290fd54d.svg",
+    "static/media/github-logo.svg": "/static/media/github-logo.ef9e511c675daef971175c9e020d3b70.svg",
+    "static/media/phone-image.svg": "/static/media/phone-image.9843e866d942f2d6a32672a54859fbff.svg",
+    "static/media/Gmail logo.svg": "/static/media/Gmail logo.dfc7b7f51fe4005053c6bee6ef44c7df.svg",
     "index.html": "/index.html",
-    "static/media/upload.svg": "/static/media/upload.d61b51fa8d4b89afdf91aac924cd68d6.svg",
-    "main.a1097557.css.map": "/static/css/main.a1097557.css.map",
-    "main.bce59ff0.js.map": "/static/js/main.bce59ff0.js.map",
+    "main.9f457b6c.css.map": "/static/css/main.9f457b6c.css.map",
+    "main.1e0f2b8d.js.map": "/static/js/main.1e0f2b8d.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a1097557.css",
-    "static/js/main.bce59ff0.js"
+    "static/css/main.9f457b6c.css",
+    "static/js/main.1e0f2b8d.js"
   ]
 }

@@ -9,11 +9,3 @@
     animation: none !important;
     transition: none !important;
 }
-
-@media(max-width: 600px) {
-    #main {
-        flex-direction: column;
-        /* height: 100vh; */
-        /* justify-content: flex-start; */
-    }
-}

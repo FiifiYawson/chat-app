@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import "../styles/profilepic.css"
 
-function ProfilePicture({ id }) {
+function ProfilePicture({ id, isOnline }) {
     const [isOK, setIsOK] = useState()
 
     useEffect(() => {
-        fetch(`/files/profilepic/${id}`)
+        fetch(`/files/profilepic/${id}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("auth token")}`
+            }
+        })
         .then(res => {
             if (res.ok) {
                 return res.blob()
@@ -26,7 +30,9 @@ function ProfilePicture({ id }) {
         :{}
     
     return (
-        <div style={style} className='contact-profilepic profilepic'></div>            
+        <div style={style} className='contact-profilepic profilepic'>
+            {isOnline && <div className='online-indicator'></div>}
+        </div>            
     )
 }
 

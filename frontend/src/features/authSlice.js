@@ -5,10 +5,10 @@ const initialState = {
         value: false,
         text: "",
     },
-    loading: false,
+    profilepic: "",
 }
 
-export const login = createAsyncThunk("login", async(payload) => {
+export const login = createAsyncThunk("login", async (payload) => {
     const res = await fetch(`/user/${payload.status}`, {
         method: "POST",
         headers: {
@@ -21,19 +21,33 @@ export const login = createAsyncThunk("login", async(payload) => {
 
     data = {
         ...data,
-        email_or_number: payload.email_or_number,
+        username: payload.email_or_number,
         name: payload.name,
     }
 
     if (data.isSuccess) {
         localStorage.setItem("auth token", data.token)
-        localStorage.setItem("email_or_number", payload.inputs.email_or_number)
-        localStorage.setItem("id", data.userId)
-        localStorage.setItem("chats", JSON.stringify(data.chatIds))
+        localStorage.setItem("username", payload.inputs.username)
+        localStorage.setItem("id", data.userDetails._id)
+        localStorage.setItem("name", data.userDetails.name)
         payload.navigate("/")
     }
 
     return data
+})
+
+export const getProfilePic = createAsyncThunk("api/get-profilpic", async (payload, thunk) => {
+    const res = await fetch(`/files/profilepic/${localStorage.getItem("id")}`, {
+        headers: {
+            authorization: `Bearer ${localStorage.getItem("auth token")}`
+        }
+    })
+
+    if (res.status !== 200) return thunk.rejectWithValue(false)
+
+    const data = await res.blob()
+
+    return URL.createObjectURL(data)
 })
 
 const authSlice = createSlice({
@@ -46,6 +60,9 @@ const authSlice = createSlice({
                 text: ""
             }
         },
+        reset: (state) => {
+            return state = { ...initialState }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -57,7 +74,7 @@ const authSlice = createSlice({
                     state.isLoggedIn = action.payload.isSuccess
                     state.chats = action.payload.chatIds
                     state.userId = action.payload.userId
-                    state.email_or_number = action.payload.email_or_number
+                    state.username = action.payload.username
                     state.name = action.payload.name
                 } else {
                     state.error = {
@@ -74,8 +91,14 @@ const authSlice = createSlice({
                     text: "couldn't connect to server"
                 }
             })
+            .addCase(getProfilePic.fulfilled, (state, action) => {
+                state.profilepic = action.payload
+            })
     }
 })
 
 export default authSlice.reducer
-export const authActions = authSlice.actions
+export const {
+    resetError,
+    reset,
+} = authSlice.actions

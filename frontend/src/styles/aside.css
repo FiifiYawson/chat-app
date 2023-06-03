@@ -1,15 +1,35 @@
 aside {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    box-sizing: content-box;
     height: 100vh;
-    /* width: 30vw;
-    min-width: 15vw; */
-    width: clamp(250px, 30vw, 300px)
+    min-width: 250px;
+    width: clamp(250px, 30vw, 300px);
+    background-image: url("../images/background.png");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+aside::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #0000007f;
 }
 
 @media(max-width: 600px) {
     aside {
+        width: 0;
+        overflow: hidden;
+        height: 100vh;
+        display: none;
+    }
+
+    aside.active{
         width: 100vw;
-        height: fit-content;
+        display:flex;
     }
 }

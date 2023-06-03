@@ -2,14 +2,17 @@ const mongoose = require("mongoose")
 
 const conn = mongoose.connection
 
-//Creating GridFs Stream for file queries and MongoDB bucket for file streaming. //
+// Creating GridFs Stream for file queries and MongoDB bucket for file streaming. //
 conn.once("open", () => {
     gridBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-        bucketName: "files",
+        bucketName: "profile-pics",
+    })
+    attachment = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: "attachment",
     })
 })
 
-//Add file to database. //
+// Add file to database. //
 async function addProfilePic(req, res) {
     try {
         await gridBucket.find({ filename: req.file.filename, _id: { $ne: req.file.id } }).forEach(file => gridBucket.delete(file._id))
@@ -32,7 +35,7 @@ async function addProfilePic(req, res) {
 
 async function getProfilePic(req, res) {
     try {
-        const files = await gridBucket.find({ filename: `profilepic-${req.params.userId}` }).toArray()
+        const files = await gridBucket.find({ filename: `profilepic-${req.params.id}` }).toArray()
 
         if (files.length === 1) {
             files.forEach(file => gridBucket.openDownloadStream(file._id).pipe(res))

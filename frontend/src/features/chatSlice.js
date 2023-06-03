@@ -1,13 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import getSocket from "../socket"
 
 const initialState = {
     chats: [],
+    texts: {},
     activeChat: null,
     loading: false,
+    loadingText: false,
 }
 
-export const createChat = createAsyncThunk("api/create", async(payload) => {
-    const res = await fetch(`/messages/${payload.receiverId}`, {
+export const createChat = createAsyncThunk("api/create", async (payload) => {
+    const res = await fetch(`/messages/create-chat/${payload.receiverId}`, {
         method: "POST",
         headers: {
             "Content-type": "application/json",
@@ -18,34 +21,57 @@ export const createChat = createAsyncThunk("api/create", async(payload) => {
     const data = await res.json()
 
     if (data.isSuccess) {
-        payload.socket.emit("createChat", {
-            receiver: payload.receiverId,
-            chat: data.chat,
-            room: data.chat._id,
-        })
+        payload.socket.emit("createChat", data.chats[0])
     }
 
     return data
 })
 
-export const sendMessage = createAsyncThunk("api/send", async(payload) => {
-    const res = await fetch(`/messages/send/${payload.receiverId}`, {
+export const sendMessage = createAsyncThunk("api/send", async (payload, thunk) => {
+    const res = await fetch(`/messages/send`, {
         method: "POST",
+        body: JSON.stringify({
+            chat: payload.chat,
+            content: payload.content,
+            sender: payload.sender,
+        }),
         headers: {
             authorization: `Bearer ${localStorage.getItem("auth token")}`,
             "Content-type": "application/json"
         },
-        body: JSON.stringify(payload.text)
     })
 
+    if (res.status !== 200) return thunk.rejectWithValue(false)
+
     const data = await res.json()
+
+    payload.socket.emit("message", {
+        ...data.text,
+    })
 
     return data
 })
 
-export const getAllChats = createAsyncThunk("api/getAll", async(socket) => {
+export const deleteText = createAsyncThunk("api/delete-text", async ({ text }) => {
+    const res = await fetch(`/messages/delete-text/${text._id}`, {
+        method: "DELETE",
+        headers: {
+            authorization: `Bearer ${localStorage.getItem("auth token")}`
+        }
+    })
+
+    if (res.status !== 200) return
+
+    const data = await res.json()
+
+    const socket = getSocket()
+
+    socket.emit("delete-text", data.text)
+    return data
+})
+
+export const getAllChats = createAsyncThunk("api/getAll", async (socket) => {
     const res = await fetch(`/messages`, {
-        method: "GET",
         headers: {
             authorization: `Bearer ${localStorage.getItem("auth token")}`
         }
@@ -54,14 +80,13 @@ export const getAllChats = createAsyncThunk("api/getAll", async(socket) => {
     const data = await res.json()
 
     if (data.isSuccess) {
-        const userChats = data.chats.map(chat => chat._id)
+        const userChats = data.chats.map(chat => chat.chat)
 
         socket.emit("userConnect", {
-            rooms: userChats,
+            rooms: [...userChats],
             user: localStorage.getItem("id"),
         })
     }
-
 
     return data
 })
@@ -71,31 +96,25 @@ const chatSlice = createSlice({
     initialState,
     reducers: {
         setActiveChat: (state, action) => {
-            state.activeChat = state.chats.find(chat => chat._id === action.payload)
+            state.activeChat = state.chats.find(chat => chat._id === action.payload._id)
+        },
+        setTexts: (state, action) => {
+            state.texts[action.payload.chatId] = action.payload.texts
         },
         addText: (state, action) => {
-            state.chats.find((chat => chat._id === action.payload.room)).texts.push(action.payload.text)
-
-            const active = state.activeChat && state.activeChat._id === action.payload.room
-
-            if (active) {
-                state.activeChat.texts.push(action.payload.text)
-            }
+            const text = action.payload
+            state.texts[text.chat].push(text)
         },
         addChat: (state, action) => {
+            console.log(action.payload)
             state.chats.push(action.payload)
         },
-        isTyping: (state, action) => {
-            state.chats.find(chat => chat._id === action.payload.room).isTyping = action.payload.value
+        removeText: (state, action) => {
+            const text = action.payload
+            state.texts[text.chat] = state.texts[text.chat].filter(chatText => chatText._id !== text._id)
         },
-        online: (state, action) => {
-            const valid = state.chats.find(chat => chat._id === action.payload.room)
-
-            if (valid) valid.isOnline = action.payload.value
-        },
-        reset: (state, action) => {
-            state.chats = initialState.chats
-            state.activeChat = initialState.activeChat
+        reset: (state) => {
+            return state = { ...initialState }
         }
     },
     extraReducers: (builder) => {
@@ -105,7 +124,6 @@ const chatSlice = createSlice({
             })
             .addCase(getAllChats.fulfilled, (state, action) => {
                 if (action.payload.isSuccess) state.chats = action.payload.chats
-
                 state.loading = false
             })
             .addCase(getAllChats.rejected, (state, action) => {
@@ -113,10 +131,25 @@ const chatSlice = createSlice({
             })
             .addCase(createChat.fulfilled, (state, action) => {
                 action.payload.isSuccess &&
-                    state.chats.push(action.payload.chat)
+                    state.chats.push(action.payload.chats[1])
+            })
+            .addCase(sendMessage.fulfilled, (state, action) => {
+                const text = action.payload.text
+                state.texts[text.chat].push(text)
+            })
+            .addCase(deleteText.fulfilled, (state, action) => {
+                const text = action.payload.text
+                state.texts[text.chat] = state.texts[text.chat].filter(stateText => stateText._id !== text._id)
             })
     }
 })
 
 export default chatSlice.reducer
-export const { setActiveChat, addText, addChat, isTyping, online, reset } = chatSlice.actions
+export const {
+    setActiveChat,
+    addText,
+    addChat,
+    removeText,
+    reset,
+    setTexts,
+} = chatSlice.actions

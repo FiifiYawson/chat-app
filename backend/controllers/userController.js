@@ -1,65 +1,73 @@
-const users = require("../schemas/userSchema.js")
+const users = require("../models/userSchema.js")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 async function createUser(req, res) {
+    let userDetails
     try {
-        const userExists = await users.exists({ email_or_number: req.body.email_or_number })
+        if (req.body.username.trim().split(" ").length > 1) return res.status(400).json({
+            message: "username cannot contain spaces",
+            isSuccess: false,
+        })
+
+        const userExists = await users.exists({ username: req.body.username })
 
         if (userExists) {
-            res.status(400).json({
-                message: "Phone number or E-mail is already used by another user",
+            return res.status(400).json({
+                message: "username already in user by another user",
                 isSuccess: false,
-                isError: false,
-            })
-        } else {
-            const salt = await bcrypt.genSalt()
-
-            req.body.password = await bcrypt.hash(req.body.password, salt)
-
-            await users.create(req.body)
-
-            let user = await users.findOne(req.body)
-
-            const token = await jwt.sign(JSON.stringify(user), process.env.SECRET)
-
-            res.status(200).json({
-                message: "User created successfully",
-                isSuccess: true,
-                isError: false,
-                token,
-                userId: user._id
             })
         }
-    } catch (error) {
-        console.log(error)
 
-        await users.deleteOne(req.body)
+        const salt = await bcrypt.genSalt()
+
+        req.body.password = await bcrypt.hash(req.body.password, salt)
+
+        userDetails = await users.create(req.body)
+
+        if (!userDetails) {
+            return res.status(400).json({
+                message: "couldn't create user chat inputs",
+                userDetails,
+            })
+        }
+
+        const token = jwt.sign(JSON.stringify(userDetails), process.env.SECRET)
+
+        res.status(200).json({
+            message: "User created successfully",
+            isSuccess: true,
+            token,
+            userDetails,
+        })
+    } catch (error) {
+        console.log(error.message)
+
+        if (userDetails) await users.deleteOne(req.body)
 
         res.status(500).json({
             message: "Server error",
             isSuccess: false,
-            iSError: true,
         })
     }
 }
 
 async function loginUser(req, res) {
     try {
-        const user = await users.findOne({ email_or_number: req.body.email_or_number })
+        const userDetails = await users.findOne({ username: req.body.username })
 
-        if (user && await bcrypt.compare(req.body.password, user.password)) {
-            const token = await jwt.sign(JSON.stringify(user), process.env.SECRET)
+        if (userDetails && await bcrypt.compare(req.body.password, userDetails.password)) {
+            const token = jwt.sign(JSON.stringify(userDetails), process.env.SECRET)
 
             res.status(200).json({
                 message: "Log-in successful",
                 isSuccess: true,
                 token,
-                userId: user._id,
+                userDetails,
             })
         } else {
             res.status(400).json({
-                message: user ? "Incorrect password" : "No user with this phone number or E-mail",
+                message: userDetails ? "Incorrect password" : "No user with this phone number or E-mail",
                 isSuccess: false,
                 isError: false,
             })
@@ -103,38 +111,125 @@ async function deleteUser(req, res) {
 
 async function searchUser(req, res) {
     try {
-        const searchUsers = await users.find({
-            $and: [{
-                $or: [{
-                    name: {
-                        $regex: req.params.query,
-                        $options: "i"
-                    },
-                }, {
-                    email_or_number: {
-                        $regex: req.params.query,
-                        $options: "i"
-                    },
-
-                }]
+        const searchResults = await users.find({
+            $or: [{
+                name: {
+                    $regex: req.params.query,
+                    $options: "i"
+                },
             }, {
-                _id: { $ne: req.payload._id }
-            }]
+                username: {
+                    $regex: req.params.query,
+                    $options: "i"
+                },
+
+            }],
+            _id: { $ne: req.userDetails._id }
         })
 
         res.json({
-            searchUsers,
+            searchResults,
+        })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+async function getUserDetails(req, res) {
+    try {
+        let projections = {};
+
+        // if queried for specific attributes, fetch them //
+        if (req.params[0] !== '') {
+            const attributes = req.params[0].replace('/password', '');
+
+            if (attributes !== '') {
+                attributes.substring(1).split("/").forEach(attr => { projections[attr] = 1; });
+            }
+        } else {
+            projections = {
+                password: 0,
+                __v: 0,
+            };
+        }
+
+        const userDetails = await users.findById(req.params.id).select(projections);
+
+        if (userDetails) {
+            res.status(200).json({
+                message: "query successful",
+                userDetails,
+                isSuccess: true,
+            });
+        } else {
+            res.status(400).json({
+                message: "user not found",
+            });
+        }
+    } catch (error) {
+        console.log(error.message);
+
+        res.status(500).json({
+            message: "server error",
+        });
+    }
+}
+
+async function editUserInfo(req, res) {
+    try {
+        if (req.body.username.trim().split(" ").length > 1) return res.status(400).json({
+            message: "username cannot contain spaces",
+            isSuccess: false,
+        })
+
+        // if there's a password, encrypt it //
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, await bcrypt.genSalt())
+        }
+
+        // if there's a username, check if it's valid //
+        if (req.body.username) {
+            const notValid = await users.exists({
+                username: req.body.username,
+                _id: { $ne: req.userDetails._id }
+            })
+
+            if (notValid) {
+                return res.status(400).json({
+                    message: "username already in user by another user",
+                    username: req.body.username,
+                })
+            }
+        }
+
+        const userDetails = await users.findByIdAndUpdate(req.userDetails._id, req.body)
+
+        if (!userDetails) {
+            return res.status(400).json({
+                message: "error updating info, check inputs",
+                inputs: req.body
+            })
+        }
+
+        return res.status(200).json({
+            message: "user updated successfully",
+            userDetails: userDetails,
         })
 
     } catch (error) {
         console.log(error.message)
-    }
 
+        return res.status(500).json({
+            message: "server error",
+        })
+    }
 }
 
 module.exports = {
     createUser,
     loginUser,
     deleteUser,
-    searchUser
+    searchUser,
+    getUserDetails,
+    editUserInfo,
 }

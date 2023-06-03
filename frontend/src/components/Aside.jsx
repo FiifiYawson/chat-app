@@ -1,15 +1,19 @@
 import Contacts from "./Contacts/Contacts"
 import Menu from "./Menu/Menu"
+import { useLocation } from "react-router-dom"
 import "../styles/aside.css"
-import Profile from "./Profile"
-
-function Aside() {
+import {Outlet} from "react-router-dom"
+function Aside() {    
+    const { pathname } = useLocation()
+    
     return (
-        <aside>
-            <Menu />
-            <Profile/>
-            <Contacts />
-        </aside>
+        <>
+            <aside className={pathname === "/" ? "active" : ""}>
+                <Menu />
+                <Contacts />
+            </aside>
+            <Outlet />
+        </>
     )
 }
 

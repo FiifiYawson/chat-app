@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SearchContact from "./SearchContact.jsx"
+import Menu from '../Menu/Menu.jsx'
 import "../../styles/home.css"
 import { ImSearch } from "react-icons/im"
 
@@ -9,15 +10,23 @@ function Home() {
     const [searchResults, setSearchResults] = useState([])
 
     const searchUser = async (query) => {
-        const res = await fetch(`user/search/${query || searchInput}`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem("auth token")}`
+        try {
+            const res = await fetch(`user/search/${query || searchInput}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("auth token")}`
+                },
+            })
+
+            if (res.status !== 200) {
+                return console.log(res)
             }
-        })
 
-        const data = await res.json()
+            const data = await res.json()
 
-        setSearchResults(data.searchUsers)
+            setSearchResults(data.searchResults)
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     const onChange = (e) => {
@@ -33,12 +42,13 @@ function Home() {
 
     return (
         <div id='home' className='display'>
+            <Menu/>
             <div id='contact-search'>
                 <input id='search-input' onChange={onChange} value={searchInput} type="text" name="contact" placeholder="Search for contacts" />
                 <button id='search-button' onClick={searchUser}><ImSearch/></button>
             </div>
             <div id='search-results'>
-                {searchResults.map(user => <SearchContact key={user._id} contact={user} />)}
+                {searchResults && searchResults.map(user => <SearchContact key={user._id} contact={user} />)}
             </div>
         </div>  
     )

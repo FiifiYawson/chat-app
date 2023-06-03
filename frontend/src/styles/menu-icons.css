@@ -1,26 +1,21 @@
 #menu {
-    background-color: #3E9BC2;
+    background-color: var(--secondary-blue);
     display: flex;
     align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+    min-height: 50px;
+    position: relative;
 }
 
 .menu-icon {
     padding: 5px;
     cursor: pointer;
-    width: 50px;
+    width: 35px;
     height: 35px;
 }
 
 .menu-icon:hover {
     color: #fff;
     background-color: #fff;
-}
-
-#plus {
-    transition: 1s;
-    z-index: 3;
-}
-
-#plus.active {
-    transform: rotateZ(135deg);
 }

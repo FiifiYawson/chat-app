@@ -8,7 +8,7 @@
     overflow: hidden;
     box-sizing: border-box;
     z-index: 2;
-    background: #2C34F1;
+    background: var(--semantic-blue);
     transform: translateX(-100%);
     transition: transform 0.5s;
 }

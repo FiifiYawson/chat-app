@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import Semantic from './Semantic'
 import logo from "../images/logo.svg"
-import { authActions, login } from "../features/authSlice"
+import { resetError, login } from "../features/authSlice"
 import Loader from "./Loader"
 import "../styles/form.css"
 
@@ -14,25 +14,29 @@ function Form() {
     
     const auth = useSelector(store => store.auth)
 
-    // Set form state ; initially "Login". //
+    // Set form state //
     const [status, setStatus] = useState("Login")
 
-    //Setting error state. //
+    // Setting error state //
     const [error, setError] = useState({
         value: false,
         text: "",
     })
 
-    //Declare states for inputs. //
+    // Declare states for inputs. //
     const [inputs, setInputs] = useState({
         name: "",
-        email_or_number: "",
+        username: "",
+        dob: "",
         password: "",
         confirmPassword: "",
     })
 
-    //change Input state. //
+    // change Input state. //
     const changeInput = (e) => {
+        if (e.target.name === "username") {
+            e.target.value = e.target.value.replace(" ", "_")
+        }
         setInputs({
             ...inputs,
             [e.target.name] : e.target.value
@@ -86,26 +90,21 @@ function Form() {
 
     //Remove error message. //
     if (auth.error.value) {
-        setTimeout(() => dispatch(authActions.resetError()), 5000)
+        setTimeout(() => dispatch(resetError()), 5000)
     }
         
     return (
-        <form >
+        <form id='login-form'>
             <img id="logo" src={logo} alt="" />
             {status === "Register" && <input type="text" onChange={changeInput} name="name" value={inputs.name} placeholder="Input name" />}
-            <input type="tel" onChange={changeInput} name="email_or_number" value={inputs.email_or_number} placeholder="Phone number / email" />
+            <input type="tel" onChange={changeInput} name="username" value={inputs.email_or_number} placeholder="username" />
+            {status === "Register" && <input type="date" name="dob" onChange={changeInput} id="" />}
             <input type="password" onChange={changeInput} name="password" value={inputs.password} placeholder="Password" />
             {status === "Register" && <input type="password" onChange={changeInput} name="confirmPassword" value={inputs.confirmPassword} placeholder="Confirm Password" />}
             <div id="info" onClick={changeStatus}>
-                {status === "Login" ?
-                <p>
-                    Don't have and account? <span className="link"> Register </span>here.
-                </p>
-                :
-                <p>
-                    <span className="link">click here to Login</span> if you already have an account.
-                </p>
-                }
+                {status === "Login"
+                    ? <p>Don't have and account? <span className="link"> Register </span>here</p>
+                    :<p><span className="link">click here to Login</span> if you already have an account</p>}
             </div>
             {auth.error.value && <Semantic text={auth.error.text} code="warn"/>}
             {error.value && <Semantic text={error.text} code="warn" />}

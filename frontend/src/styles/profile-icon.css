@@ -1,0 +1,26 @@
+.user-profilepic {
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.profilepic {
+    background-image: url(../images/user-pic.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s;
+}
+
+#home-icon{
+    display: none;
+}
+
+@media(max-width: 600px){
+    #home-icon{
+        display: block;
+    }
+}

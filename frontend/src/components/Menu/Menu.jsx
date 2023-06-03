@@ -10,15 +10,26 @@ function Menu() {
     const openOptions = (e) => {
         setMenus({
             ...menus,
-            options: !menus.options,
+            options: true,
         })
+
+        const closeMenu = (e) => {      
+            if(e.target.id === "options" || e.target.classList.contains("option") ) return
+            setMenus({
+                ...menus,
+                options: false,
+            })
+
+            window.removeEventListener("mousedown", closeMenu)
+        }
+
+        window.addEventListener("mousedown", closeMenu)
     }
 
     return (
-
         <>
             <MenuIcons openOptions={openOptions} />
-            <MenuOptions active={menus.options} openOptions={openOptions} />
+            <MenuOptions active={menus.options} menu={setMenus} />
         </>
     )
 }

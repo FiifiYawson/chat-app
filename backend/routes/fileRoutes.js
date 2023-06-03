@@ -6,6 +6,6 @@ const { addProfilePic, getProfilePic } = require("../controllers/fileController"
 const router = express.Router()
 
 router.route("/profilepic").post(validate, upload.single("profilepic"), addProfilePic)
-router.route("/profilepic/:userId").get(getProfilePic)
+router.route("/profilepic/:id").get(validate, getProfilePic)
 
 module.exports = router

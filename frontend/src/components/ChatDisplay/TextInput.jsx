@@ -1,89 +1,73 @@
-import {useState, useContext, useRef, useEffect} from 'react'
-import { sendMessage, addText } from "../../features/chatSlice.js"
+import {useState, useRef} from 'react'
+import { sendMessage } from "../../features/chatSlice.js"
 import { useDispatch} from "react-redux"
-import { socketContext } from "../../pages/Main.jsx"
-import { GrSend } from "react-icons/gr"
+import { FaRegPaperPlane } from "react-icons/fa"
 import "../../styles/input-area.css"
+import getSocket from "../../socket"
 
 
 function TextInput({chatId}) {
-    const chatElem = document.getElementById("chat")
-
     const dispatch = useDispatch()
-    
-    const socket = useContext(socketContext)
-    
     const textarea = useRef()
 
-    useEffect(() => {
-        if (chatElem) {
-            chatElem.scrollTop = chatElem.scrollHeight
-        }
-    },[chatElem])
-
     const [input, setInput] = useState("")
-    
     const [isTyping, setIsTyping] = useState(false)
-
-    const emitMessage = () => {
-        const payload = {
-            room: chatId,
-            text: {
-                sender: localStorage.getItem("id"),
-                text: input,
-                time: Date.now()
-            }
-        }
-
-        socket.emit("message", payload)
-
-        dispatch(addText(payload))
-    }
+    const [socket] = useState(() => getSocket())
 
     const sendMessageFn = () => {
-        if (input !== "") {
+        if (input.trim() !== "") {
             dispatch(sendMessage({
-                receiverId: chatId,
-                text: {
-                    sender: localStorage.getItem("id"),
-                    text: input,
-                    time: Date.now()
-                }
+                chat: chatId,
+                sender: localStorage.getItem("id"),
+                content: input,
+                socket,
             }))
-    
-            emitMessage()
-    
+        
             setInput("")
     
             textarea.current.focus()
+            textarea.current.style.height = "50px"
     
             socket.emit("isTyping", {
-                room: chatId, user: localStorage.getItem("id"),
+                room: chatId,
+                user: localStorage.getItem("id"),
                 value: false
-            })    
+            })
         }
     }
     
     const onChange = (e) => {
-        setInput(e.target.value)
+        e.target.style.height = "auto"
+        e.target.style.height = `${textarea.current.scrollHeight}px`
+        if(e.target.value === "") textarea.current.style.height = "50px"
 
         if (e.target.value.length > 0 && !isTyping) {
             setIsTyping(true)
 
-            socket.emit("isTyping", {room: chatId,  user: localStorage.getItem("id"), value: true})
+            socket.emit("isTyping", {
+                room: chatId,
+                user: localStorage.getItem("id"),
+                value: true
+            })
         }
 
         if (e.target.value.length === 0 && isTyping) {
             setIsTyping(false)
 
-            socket.emit("isTyping", {room: chatId, user: localStorage.getItem("id"), value: false})
+            socket.emit("isTyping", {
+                room: chatId,
+                user: localStorage.getItem("id"),
+                value: false
+            })
         }
+
+        setInput(e.target.value)
     }
 
     return (
         <div id='text-input'>
-            <textarea ref={textarea} wrap='soft' cols="5" value={input} autoFocus onChange={onChange} placeholder='write something...' />
-            <button onClick={sendMessageFn}><GrSend id='send'/></button>
+            <textarea id='text-area' ref={textarea} wrap='soft' autoFocus onChange={onChange} value={input} placeholder='write something...' />
+            <button id="send-btn" onClick={sendMessageFn}><FaRegPaperPlane id='send'/></button>
         </div>
     )
 }
