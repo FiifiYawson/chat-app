@@ -18,6 +18,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow: hidden;
 }
 
 body {
@@ -28,7 +29,7 @@ body {
 }
 
 #root {
-    /* overflow: hidden; */
+    overflow: hidden;
     width: 100vw;
     height: 100vh;
 }
