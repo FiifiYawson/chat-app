@@ -67,7 +67,7 @@ async function loginUser(req, res) {
             })
         } else {
             res.status(400).json({
-                message: userDetails ? "Incorrect password" : "No user with this phone number or E-mail",
+                message: userDetails ? "Incorrect password" : "No user with this username",
                 isSuccess: false,
                 isError: false,
             })
