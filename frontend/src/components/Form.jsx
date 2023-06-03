@@ -97,8 +97,8 @@ function Form() {
         <form id='login-form'>
             <img id="logo" src={logo} alt="" />
             {status === "Register" && <input type="text" onChange={changeInput} name="name" value={inputs.name} placeholder="Input name" />}
-            <input type="tel" onChange={changeInput} name="username" value={inputs.email_or_number} placeholder="username" />
-            {status === "Register" && <input type="date" name="dob" onChange={changeInput} id="" />}
+            <input type="text" onChange={changeInput} name="username" value={inputs.email_or_number} placeholder="username" />
+            {status === "Register" && <input type="date" placeholder='Date of Birth' name="dob" onChange={changeInput} id="" />}
             <input type="password" onChange={changeInput} name="password" value={inputs.password} placeholder="Password" />
             {status === "Register" && <input type="password" onChange={changeInput} name="confirmPassword" value={inputs.confirmPassword} placeholder="Confirm Password" />}
             <div id="info" onClick={changeStatus}>
