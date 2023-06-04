@@ -21,7 +21,10 @@ export const createChat = createAsyncThunk("api/create", async (payload) => {
     const data = await res.json()
 
     if (data.isSuccess) {
-        payload.socket.emit("createChat", data.chats[0])
+        payload.socket.emit("createChat", {
+            senderChat: data.chats[1],
+            recieverChat: data.chats[0]
+        })
     }
 
     return data

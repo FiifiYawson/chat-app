@@ -93,14 +93,18 @@ io.on("connect", (socket) => {
         socket.to(message.chat).emit("message", message)
     })
 
-    socket.on("createChat", async (chat) => {
-        const senderSockets = await io.to(socket.data.userId).fetchSockets()
-        const receiverSockets = await io.to(chat.user).fetchSockets()
+    socket.on("createChat", async ({ senderChat, recieverChat }) => {
+        const senderSockets = await io.to(senderChat.user).fetchSockets()
+        const receiverSockets = await io.to(recieverChat.user).fetchSockets()
 
-        senderSockets.forEach(userSocket => userSocket.join(chat.chat))
-        receiverSockets.forEach(socket => socket.join(chat.chat))
+        senderSockets.forEach(userSocket => userSocket.join(senderChat.chat))
+        receiverSockets.forEach(socket => {
+            socket.join(recieverChat.chat)
 
-        socket.to(chat.chat).emit("createChat", chat)
+            io.to(socket.id).emit("createChat", recieverChat)
+        })
+
+        socket.to(senderChat.user).emit("createChat", senderChat)
     })
 
     socket.on("isTyping", (typing) => {

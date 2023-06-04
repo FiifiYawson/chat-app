@@ -90,21 +90,21 @@ async function createChat(req, res) {
     let createdChats
     let chat
     try {
-        chat = await chats.create({});
-
         const invalid = await userChats.exists({
             $or: [{
                 user: req.params.id,
                 chatRef: req.userDetails._id
             }, {
-                chatRef: req.userDetails._id,
-                user: req.params.id
+                chatRef: req.params.id,
+                user: req.userDetails._id
             }]
         })
 
         if (invalid) return res.status(400).json({
             message: "chat already exists"
         })
+
+        chat = await chats.create({});
 
         // create userChats for each chat user //
         createdChats = await userChats.create([{

@@ -3,6 +3,7 @@ aside {
     flex-direction: column;
     overflow: hidden;
     box-sizing: content-box;
+    min-width: 250px;
     width: clamp(250px, 30vw, 300px);
     background-image: url("../images/background.png");
     height: 100dvh;
@@ -23,7 +24,6 @@ aside::before {
     aside {
         width: 0;
         overflow: hidden;
-        height: 100vh;
         display: none;
     }
 
