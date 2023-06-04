@@ -3,8 +3,8 @@ aside {
     flex-direction: column;
     overflow: hidden;
     box-sizing: content-box;
-    height: 100vh;
-    min-width: 250px;
+    /* height: 100vh; */
+    /* min-width: 250px; */
     width: clamp(250px, 30vw, 300px);
     background-image: url("../images/background.png");
     background-position: center;
