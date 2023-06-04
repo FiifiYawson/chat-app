@@ -60,7 +60,20 @@ function Form() {
                 text: "incorrect password confirmation"
             })
 
-        } else if ((inputs.name !== "" & inputs.email_or_number !== "" & inputs.password !== "" & status === "Register") | (status === "Login" & inputs.email_or_number !== "" & inputs.password !== "")) {
+        } else if (
+            (
+                inputs.name !== "" &&
+                inputs.username !== "" &&
+                inputs.password !== "" &&
+                inputs.dob !== "" &&
+                status === "Register"
+            )
+            ||
+            (
+                status === "Login" &&
+                inputs.username !== "" &&
+                inputs.password !== ""
+            )) {
             dispatch(login({ inputs, status, navigate}));
             
         } else {

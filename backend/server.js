@@ -93,9 +93,14 @@ io.on("connect", (socket) => {
         socket.to(message.chat).emit("message", message)
     })
 
-    socket.on("createChat", (chat) => {
-        socket.join(chat.chat)
-        socket.to(chat.user).emit("createChat", chat)
+    socket.on("createChat", async (chat) => {
+        const senderSockets = await io.to(socket.data.userId).fetchSockets()
+        const receiverSockets = await io.to(chat.user).fetchSockets()
+
+        senderSockets.forEach(userSocket => userSocket.join(chat.chat))
+        receiverSockets.forEach(socket => socket.join(chat.chat))
+
+        socket.to(chat.chat).emit("createChat", chat)
     })
 
     socket.on("isTyping", (typing) => {
