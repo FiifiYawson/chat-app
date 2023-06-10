@@ -12,7 +12,12 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    border-radius: 50%;
     transition: background-image 0.5s;
+}
+
+.profilepic.loading{
+    background-image: none;
 }
 
 #home-icon{

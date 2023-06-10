@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import "../styles/profilepic.css"
+import Loader from "../components/Loader"
 
 function ProfilePicture({ id, isOnline }) {
     const [isOK, setIsOK] = useState()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         fetch(`/files/profilepic/${id}`, {
@@ -12,7 +14,7 @@ function ProfilePicture({ id, isOnline }) {
         })
         .then(res => {
             if (res.ok) {
-                return res.blob()
+                res.blob()
                 .then(blob => {
                     const file = URL.createObjectURL(blob)
                     setIsOK(file)
@@ -20,7 +22,10 @@ function ProfilePicture({ id, isOnline }) {
             } else {
                 setIsOK(false)
             }
+
+            setIsLoading(false)
         })
+        .catch(err => console.log(err))
     }, [id])
     
     const style = isOK ?
@@ -30,8 +35,9 @@ function ProfilePicture({ id, isOnline }) {
         :{}
     
     return (
-        <div style={style} className='contact-profilepic profilepic'>
+        <div style={style} className={isLoading ? "contact-profilepic profilepic loading" : 'contact-profilepic profilepic'}>
             {isOnline && <div className='online-indicator'></div>}
+            {isLoading && <Loader className="loader"/>}
         </div>            
     )
 }

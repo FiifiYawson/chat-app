@@ -3,6 +3,7 @@
     flex-direction: column;
     overflow-y: auto;
     margin: 0 auto;
+    flex-grow: 1;
     height: 100dvh;
 }
 

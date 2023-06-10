@@ -1,29 +1,38 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import SearchContact from "./SearchContact.jsx"
 import Menu from '../Menu/Menu.jsx'
 import "../../styles/home.css"
 import { ImSearch } from "react-icons/im"
+import {ThreeCircles, Grid} from "react-loader-spinner"
 
 function Home() {
     const [searchInput, setSearchInput] = useState("")
 
     const [searchResults, setSearchResults] = useState([])
 
+    const [isLoading, setIsLoading] = useState(false)
+
+    const abort = useRef()
+
     const searchUser = async (query) => {
+        if(query.trim() === "") return
         try {
-            const res = await fetch(`user/search/${query || searchInput}`, {
+            setIsLoading(true)
+            const request = await fetch(`user/search/${query || searchInput}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("auth token")}`
                 },
+                signal: abort.current ? abort.current.signal : undefined
             })
 
-            if (res.status !== 200) {
-                return console.log(res)
+            if (request.status !== 200) {
+                return console.log(request)
             }
 
-            const data = await res.json()
+            const data = await request.json()
 
             setSearchResults(data.searchResults)
+            setIsLoading(false)
         } catch (error) {
             console.log(error.message)
         }
@@ -31,6 +40,13 @@ function Home() {
 
     const onChange = (e) => {
         setSearchInput(e.target.value)
+
+        if (abort.current) {
+            abort.current.abort()
+            setIsLoading(false)
+        }
+            
+        abort.current = new AbortController()
 
         if (e.target.value === "") {
             setSearchResults([])
@@ -45,9 +61,10 @@ function Home() {
             <Menu/>
             <div id='contact-search'>
                 <input id='search-input' onChange={onChange} value={searchInput} type="text" name="contact" placeholder="Search for contacts" />
-                <button id='search-button' onClick={searchUser}><ImSearch/></button>
+                <button id='search-button' onClick={searchUser}>{isLoading ? <ThreeCircles className="loader" color="white" width="20" height="20"/> : <ImSearch />}</button>
             </div>
             <div id='search-results'>
+                {isLoading && <Grid color="#CCCCCC"/>}
                 {searchResults && searchResults.map(user => <SearchContact key={user._id} contact={user} />)}
             </div>
         </div>  

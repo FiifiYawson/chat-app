@@ -50,6 +50,34 @@
     color: #fff;
 }
 
+.loading{
+    background: linear-gradient(30deg, #b3b1b1,#b3b1b1,#b3b1b1, #fbfbfb,#b3b1b1,#b3b1b1, #b3b1b1);
+    background-size: 400% 100%;
+    background-position: center;
+    border-radius: 5px;
+    animation: load 2s alternate infinite;
+    overflow: auto;
+    height: 15px;
+    margin: 5px 0;
+}
+
+.contact-title.loading{
+    display:block;
+    height: 20px;
+    animation: load 5s alternate infinite;
+}
+
+@keyframes load {
+    0%{
+        background-position: 0 0;
+        opacity: 0.5;
+    }
+    100%{
+        background-position: 100% 100%;
+        opacity: 0.1;
+    }
+}
+
 @media(max-width: 600px) {
     .contact {
         margin: 0;

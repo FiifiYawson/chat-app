@@ -14,6 +14,10 @@ function Contact({chat, _id }) {
   const texts = useSelector(store => store.chat.texts[chat.chat])
   const activeChat = useSelector(store => store.chat.activeChat)
   const [socket] = useState(() => getSocket())
+  const [loading, setLoading] = useState({
+    image: true,
+    contactDetails: true,
+  })
   
   let status = null
   let contactClass = null
@@ -88,6 +92,13 @@ function Contact({chat, _id }) {
             isSet: true,
           }
         })
+
+        setLoading(state => {
+          return {
+            ...state,
+            contactDetails: false,
+          }
+        })
       })
     }
   }, [_id, chat, contactDetails, dispatch])
@@ -159,9 +170,9 @@ function Contact({chat, _id }) {
     <div className={contactClass ? contactClass : "contact"} onClick={openChat}>
       <ProfilePicture id={chat.chatRef} isUser={false} isOnline={isOnline} />
       <div id="contact-info">
-        <span className='contact-title' title={`${contactDetails.name} @${contactDetails.username}`}>{contactDetails.name}  </span>
-        <span className='contact-username'>{contactDetails.username && `@${contactDetails.username}`}</span>
-        <div className='contact-status'>{status ? status : texts && texts.length > 0 && texts[texts.length - 1].content}</div>
+        <span className={loading.contactDetails ? "contact-title loading" : 'contact-title'} title={`${contactDetails.name} @${contactDetails.username}`}>{contactDetails.name}  </span>
+        <span className={loading.contactDetails ? "contact-username loading" : 'contact-username'} >{contactDetails.username && `@${contactDetails.username}`}</span>
+        <div className={loading.contactDetails ? "contact-status loading" : 'contact-status'} >{status ? status : texts && texts.length > 0 && texts[texts.length - 1].content}</div>
       </div>
     </div>
   )
