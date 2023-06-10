@@ -16,7 +16,9 @@ function Contact({chat, _id }) {
   const [socket] = useState(() => getSocket())
   const [loading, setLoading] = useState({
     image: true,
-    contactDetails: true,
+    // contactDetails: true,
+    username: true,
+    texts: true,
   })
   
   let status = null
@@ -36,7 +38,6 @@ function Contact({chat, _id }) {
 
   // Get all contact's details details from the server //
   useEffect(() => {
-    let details = {}
 
     if(contactDetails.isSet) return
 
@@ -58,7 +59,21 @@ function Contact({chat, _id }) {
 
     if (data) {
       data.then((info) => {
-        details = {...info.userDetails}
+        // details = { ...info.userDetails }
+        setContactDetails(state => {
+          return {
+            ...state,
+            ...info.userDetails,
+            isSet: true,
+          }
+        })
+
+        setLoading(state => {
+          return {
+            ...state,
+            username: false,
+          }
+        })
       })
     }
 
@@ -85,18 +100,10 @@ function Contact({chat, _id }) {
           texts: info.texts
         }))
 
-        setContactDetails(state => {
-          return {
-            ...state,
-            ...details,
-            isSet: true,
-          }
-        })
-
         setLoading(state => {
           return {
             ...state,
-            contactDetails: false,
+            texts: false,
           }
         })
       })
@@ -170,8 +177,8 @@ function Contact({chat, _id }) {
     <div className={contactClass ? contactClass : "contact"} onClick={openChat}>
       <ProfilePicture id={chat.chatRef} isUser={false} isOnline={isOnline} />
       <div id="contact-info">
-        <span className={loading.contactDetails ? "contact-title loading" : 'contact-title'} title={`${contactDetails.name} @${contactDetails.username}`}>{contactDetails.name}  </span>
-        <span className={loading.contactDetails ? "contact-username loading" : 'contact-username'} >{contactDetails.username && `@${contactDetails.username}`}</span>
+        <span className={loading.username ? "contact-title loading" : 'contact-title'} title={`${contactDetails.name} @${contactDetails.username}`}>{contactDetails.name}  </span>
+        <span className={loading.username ? "contact-username loading" : 'contact-username'} >{contactDetails.username && `@${contactDetails.username}`}</span>
         <div className={loading.contactDetails ? "contact-status loading" : 'contact-status'} >{status ? status : texts && texts.length > 0 && texts[texts.length - 1].content}</div>
       </div>
     </div>
