@@ -59,7 +59,6 @@ function Contact({chat, _id }) {
 
     if (data) {
       data.then((info) => {
-        // details = { ...info.userDetails }
         setContactDetails(state => {
           return {
             ...state,
@@ -179,7 +178,7 @@ function Contact({chat, _id }) {
       <div id="contact-info">
         <span className={loading.username ? "contact-title loading" : 'contact-title'} title={`${contactDetails.name} @${contactDetails.username}`}>{contactDetails.name}  </span>
         <span className={loading.username ? "contact-username loading" : 'contact-username'} >{contactDetails.username && `@${contactDetails.username}`}</span>
-        <div className={loading.contactDetails ? "contact-status loading" : 'contact-status'} >{status ? status : texts && texts.length > 0 && texts[texts.length - 1].content}</div>
+        <div className={loading.texts ? "contact-status loading" : 'contact-status'} >{status ? status : texts && texts.length > 0 && texts[texts.length - 1].content}</div>
       </div>
     </div>
   )
