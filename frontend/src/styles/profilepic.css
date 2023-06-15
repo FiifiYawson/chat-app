@@ -17,6 +17,7 @@
     width: 20px;
     height: 20px;
     overflow: hidden;
+    background-color: #d0c4c4
 }
 
 .contact-profilepic:hover {

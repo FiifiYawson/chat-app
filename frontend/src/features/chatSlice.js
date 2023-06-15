@@ -4,6 +4,7 @@ import getSocket from "../socket"
 const initialState = {
     chats: [],
     texts: {},
+    sendingText: {},
     activeChat: null,
     loading: false,
     loadingText: false,
@@ -136,9 +137,26 @@ const chatSlice = createSlice({
                 action.payload.isSuccess &&
                     state.chats.push(action.payload.chats[1])
             })
+            .addCase(sendMessage.pending, (state, action) => {
+                const chatId = action.meta.arg.chat
+                let sendingTexts = state.sendingText[chatId]
+
+                if (!sendingTexts) sendingTexts = []
+
+                sendingTexts.push(action.meta.arg.content)
+
+                state.sendingText[chatId] = sendingTexts
+            })
+            .addCase(sendMessage.rejected, (state, action) => {
+
+            })
             .addCase(sendMessage.fulfilled, (state, action) => {
                 const text = action.payload.text
                 state.texts[text.chat].push(text)
+                const sendingTexts = state.sendingText[text.chat]
+                const sendingTextIndex = sendingTexts.indexOf(text.content)
+
+                sendingTexts.splice(sendingTextIndex, 1)
             })
             .addCase(deleteText.fulfilled, (state, action) => {
                 const text = action.payload.text

@@ -60,10 +60,7 @@ function Profile() {
             method: "POST",
         })
 
-        if (res.status !== 200) {
-            setEdit(false)
-            return
-        }
+        if (res.status !== 200) return setEdit(false)
 
         localStorage.setItem("username", info.username)
         localStorage.setItem("name", info.name)

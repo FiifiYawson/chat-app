@@ -171,7 +171,6 @@ function Contact({chat, _id }) {
       }
     })
   }
-
   return (
     <div className={contactClass ? contactClass : "contact"} onClick={openChat}>
       <ProfilePicture id={chat.chatRef} isUser={false} isOnline={isOnline} />

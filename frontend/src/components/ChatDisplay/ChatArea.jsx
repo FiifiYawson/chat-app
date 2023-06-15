@@ -7,10 +7,11 @@ function ChatArea({chat}) {
     const chatRef = useRef()
 
     const texts = useSelector(store => store.chat.texts[chat.chat])
+    const sendingTexts = useSelector(store => store.chat.sendingText[chat.chat])
 
     useEffect(() => {
         chatRef.current.scrollTop = chatRef.current.scrollHeight
-    }, [texts])
+    }, [texts, sendingTexts])
 
     
     return (
@@ -21,6 +22,14 @@ function ChatArea({chat}) {
                         {text.sender === localStorage.getItem("id") && <TextOptions text={text} />}
                         {text.content}
                         <p className='text-date'>{ new Date(text.createdAt).toLocaleString() }</p>
+                    </div>
+                </div>
+            )}
+            {sendingTexts && sendingTexts.map((text, index) =>
+                <div key={index} className="text-container">
+                    <div tabIndex={-1} className={"sender-text text"}>
+                        <TextOptions text={text} />{text}
+                        <p className='text-date'>sending...</p>
                     </div>
                 </div>
             )}

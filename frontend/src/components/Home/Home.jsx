@@ -3,7 +3,7 @@ import SearchContact from "./SearchContact.jsx"
 import Menu from '../Menu/Menu.jsx'
 import "../../styles/home.css"
 import { ImSearch } from "react-icons/im"
-import {ThreeCircles, Grid} from "react-loader-spinner"
+import { ThreeCircles, Grid } from "react-loader-spinner"
 
 function Home() {
     const [searchInput, setSearchInput] = useState("")
@@ -64,7 +64,7 @@ function Home() {
                 <button id='search-button' onClick={searchUser}>{isLoading ? <ThreeCircles className="loader" color="white" width="20" height="20"/> : <ImSearch />}</button>
             </div>
             <div id='search-results'>
-                {isLoading && <Grid color="#CCCCCC"/>}
+                {isLoading && searchResults.length === 0 && <Grid color="#CCCCCC"/>}
                 {searchResults && searchResults.map(user => <SearchContact key={user._id} contact={user} />)}
             </div>
         </div>  

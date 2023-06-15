@@ -50,7 +50,7 @@
     color: #fff;
 }
 
-.loading{
+#contact-info .loading{
     background: linear-gradient(30deg, #b3b1b1,#b3b1b1,#b3b1b1, #fbfbfb,#b3b1b1,#b3b1b1, #b3b1b1);
     background-size: 400% 100%;
     background-position: center;

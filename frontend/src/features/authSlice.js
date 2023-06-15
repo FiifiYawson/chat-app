@@ -5,7 +5,6 @@ const initialState = {
         value: false,
         text: "",
     },
-    profilepic: "",
 }
 
 export const login = createAsyncThunk("login", async (payload) => {
@@ -18,12 +17,6 @@ export const login = createAsyncThunk("login", async (payload) => {
     })
 
     let data = await res.json()
-
-    data = {
-        ...data,
-        username: payload.email_or_number,
-        name: payload.name,
-    }
 
     if (data.isSuccess) {
         localStorage.setItem("auth token", data.token)
@@ -62,6 +55,9 @@ const authSlice = createSlice({
         },
         reset: (state) => {
             return state = { ...initialState }
+        },
+        setUserDetails: (state, action) => {
+            return { ...state, ...action.payload }
         }
     },
     extraReducers: (builder) => {
@@ -72,10 +68,6 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 if (action.payload.isSuccess) {
                     state.isLoggedIn = action.payload.isSuccess
-                    state.chats = action.payload.chatIds
-                    state.userId = action.payload.userId
-                    state.username = action.payload.username
-                    state.name = action.payload.name
                 } else {
                     state.error = {
                         value: true,
@@ -101,4 +93,5 @@ export default authSlice.reducer
 export const {
     resetError,
     reset,
+    setUserDetails,
 } = authSlice.actions
