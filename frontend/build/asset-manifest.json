@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f97bfc85.css",
-    "main.js": "/static/js/main.2f9c4619.js",
+    "main.css": "/static/css/main.eb1f5163.css",
+    "main.js": "/static/js/main.46f98ded.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/Poppins-Regular.ttf": "/static/media/Poppins-Regular.4211496d0e075ffe7c2f.ttf",
     "static/media/background.png": "/static/media/background.2a7bae462df6763a4ca5.png",
@@ -11,12 +11,12 @@
     "static/media/phone-image.svg": "/static/media/phone-image.9843e866d942f2d6a32672a54859fbff.svg",
     "static/media/Gmail logo.svg": "/static/media/Gmail logo.dfc7b7f51fe4005053c6bee6ef44c7df.svg",
     "index.html": "/index.html",
-    "main.f97bfc85.css.map": "/static/css/main.f97bfc85.css.map",
-    "main.2f9c4619.js.map": "/static/js/main.2f9c4619.js.map",
+    "main.eb1f5163.css.map": "/static/css/main.eb1f5163.css.map",
+    "main.46f98ded.js.map": "/static/js/main.46f98ded.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f97bfc85.css",
-    "static/js/main.2f9c4619.js"
+    "static/css/main.eb1f5163.css",
+    "static/js/main.46f98ded.js"
   ]
 }
