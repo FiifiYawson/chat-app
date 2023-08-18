@@ -60,7 +60,13 @@ function Form() {
                 text: "incorrect password confirmation"
             })
 
-        } else if (
+        } else if ((new Date(inputs.dob) > new Date()) && inputs.dob !== "") {
+            setError({
+                ...error,
+                value: true,
+                text: "Date of birth is invalid"
+            })
+         } else if (
             (
                 inputs.name !== "" &&
                 inputs.username !== "" &&

@@ -15,6 +15,14 @@ const user = mongoose.Schema({
     dob: {
         type: Date,
         required: true,
+        validate: {
+            validator: function (date) {
+                const now = new Date()
+                const dob = new Date(date)
+
+                return dob <= now
+            }
+        }
     },
     password: {
         type: String,

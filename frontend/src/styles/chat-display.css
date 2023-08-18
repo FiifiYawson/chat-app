@@ -9,15 +9,15 @@
 }
 
 #chat-head{
-    display: flex;
-    justify-content: flex-start;
-    white-space: pre;
     align-items: center;
     color: #777;
-    text-overflow: ellipsis;
+    cursor: default;
+    justify-content: flex-start;
     padding: 0 10%;
-    cursor:default;
-    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    display: flex;
+    min-height: 20px;
 }
 
 #chat-head h1{

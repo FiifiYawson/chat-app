@@ -5,10 +5,17 @@ const bcrypt = require("bcrypt")
 async function createUser(req, res) {
     let userDetails
     try {
-        if (req.body.username.trim().split(" ").length > 1) return res.status(400).json({
+        if (req.body.username?.trim().split(" ").length > 1) return res.status(400).json({
             message: "username cannot contain spaces",
             isSuccess: false,
         })
+
+        if (new Date(req.body.dob) > new Date()) {
+            return res.status(400).json({
+                message: "date of birth is invalid",
+                dob: req.body.dob
+            })
+        }
 
         const userExists = await users.exists({ username: req.body.username })
 
